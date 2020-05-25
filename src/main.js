@@ -171,6 +171,11 @@ async function insertText(textArea, shortcut, project) {
         cursorPos += insertedText.length;
         setCaretToPos(textArea, cursorPos);
     }
+
+    textArea.dispatchEvent(new Event('input', {
+        bubbles: true,
+        cancelable: true,
+    }));
 }
 
 /**
