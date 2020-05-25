@@ -13,14 +13,14 @@ This extension has primarily been created for and tested in Mozilla Firefox. How
 
 ## Installation
 ### Firefox
-1. Select the latest version of the extension on the the [releases](https://github.com/mojira/message-extension/releases) page.
+1. Select the latest version of the extension on the [releases](https://github.com/mojira/message-extension/releases) page.
 2. Click on the `.xpi` file
 3. Follow the instructions on the popups that show up in order to install the extension
 
 You now have installed the extension successfully. If this is enabled in the browser settings, it will be automatically updated whenever there's a new version of it available.
 
 ### Google Chrome and other Chromium-based browsers
-1. Select the latest version of the extension on the the [releases](https://github.com/mojira/message-extension/releases) page.
+1. Select the latest version of the extension on the [releases](https://github.com/mojira/message-extension/releases) page.
 2. Download the `.zip` file
 3. Extract the `.zip` file into a folder and place it somewhere on your system
 4. Open `chrome://extensions`
