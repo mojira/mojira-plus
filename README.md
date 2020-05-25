@@ -30,7 +30,7 @@ Once a text field is initialized, its available messages will no longer change, 
 ### Message updates
 The addon regularily checks whether the helper messages have been updated, and if they have, it automatically saves the new messages and continues to use the new version. This is indicated by a badge on the Mojira icon.
 
-While the addon is checking for addons, the badge is green and display a question mark.
+While the addon is checking for updates, the badge is green and displays a question mark.
 
 When the addon has found an update, the badge turns blue and contains the letter "i", and if an error occurred, it is red with an exclamation mark. These two badges can be dismissed by clicking on the icon.
 
