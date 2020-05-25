@@ -12,10 +12,22 @@ import {
 } from './settings.js';
 
 /**
- * @type {
- *  variables: {[project: string]: {[variable: string]: string}};
- *  messages: {[project: string]: {[shortcut: string]: string}}
- * }
+ * @type {{
+ *      variables: {
+ *          [project: string]: {
+ *              [variable: string]: string;
+ *          };
+ *      };
+ *      messages: {
+ *          [project: string]: {
+ *              [shortcut: string]: {
+ *                  name: string;
+ *                  message: string;
+ *                  messageKey: string;
+ *              };
+ *          };
+ *      };
+ *  }}
  */
 var messageDefinitions = {
     variables: {},
@@ -162,14 +174,16 @@ function loadMessages(messageJson) {
                 if (!messages[msgVariant.project]) messages[msgVariant.project] = {};
                 messages[msgVariant.project][msgVariant.shortcut] = {
                     name: msgVariant.name,
-                    message: msgVariant.message
+                    message: msgVariant.message,
+                    messageKey: messageKey
                 };
             } else {
                 for (var project of msgVariant.project) {
                     if (!messages[project]) messages[project] = {};
                     messages[project][msgVariant.shortcut] = {
                         name: msgVariant.name,
-                        message: msgVariant.message
+                        message: msgVariant.message,
+                        messageKey: messageKey
                     };
                 }
             }

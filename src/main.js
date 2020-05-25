@@ -78,20 +78,25 @@ function modifyWikifield(element, project, editorCount) {
     textArea.classList.add('mojira-helper-messages-textarea');
     textArea.setAttribute('helper-messages-project', project);
 
-    var dropdownList = document.createElement('ul');
-    dropdownList.classList.add('aui-list-truncate', 'helper-messages-dropdown');
+    /**
+     * @type {{
+     *  key: string,
+     *  element: Element
+     * }[]}
+     */
+    const messageDropdownItems = [];
 
-    for (var messageKey in messages[project]) {
-        var message = messages[project][messageKey];
+    for (var shortcut in messages[project]) {
+        var message = messages[project][shortcut];
 
         var shortcutInfo = document.createElement('small');
         shortcutInfo.classList.add('helper-message-shortcut');
-        shortcutInfo.setAttribute('data-mojira-helper-message', messageKey);
-        shortcutInfo.textContent = `[${prefix}${messageKey}]`;
+        shortcutInfo.setAttribute('data-mojira-helper-message', shortcut);
+        shortcutInfo.textContent = `[${prefix}${shortcut}]`;
 
         var messageItem = document.createElement('a');
         messageItem.classList.add('wiki-edit-operation');
-        messageItem.setAttribute('data-mojira-helper-message', messageKey);
+        messageItem.setAttribute('data-mojira-helper-message', shortcut);
         messageItem.textContent = `${message.name} `;
         messageItem.append(shortcutInfo);
 
@@ -103,7 +108,21 @@ function modifyWikifield(element, project, editorCount) {
         var messageDropdownItem = document.createElement('li');
         messageDropdownItem.append(messageItem);
 
-        dropdownList.append(messageDropdownItem);
+        messageDropdownItems.push({
+            key: message.messageKey,
+            element: messageDropdownItem
+        });
+    }
+
+    messageDropdownItems.sort((a, b) => {
+        return a.key.localeCompare(b.key);
+    });
+
+    var dropdownList = document.createElement('ul');
+    dropdownList.classList.add('aui-list-truncate', 'helper-messages-dropdown');
+
+    for (item of messageDropdownItems) {
+        dropdownList.append(item.element);
     }
 
     var dropdownElement = document.createElement('div');

@@ -4,9 +4,6 @@
  */
 let storage = undefined;
 
-/**
- * @type {storage is browser.storage.StorageArea}
- */
 async function initStorage() {
     if (storage !== undefined) return;
 
