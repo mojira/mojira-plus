@@ -9,26 +9,26 @@ let prefix = 'mji-';
  * @param {number} limit The limit for the amount of resolved variables
  */
 function resolveVariables(text, vars, limit = 10) {
-    var varExpanded = false;
+    if (limit == 0) {
+        return text;
+    }
+
     for (var variable in vars) {
         var varReplacement = vars[variable];
         if (varReplacement && text.includes(`%${variable}%`)) {
-            varExpanded = true;
-            text = text.replace(`%${variable}%`, varReplacement);
+            text = text.split(`%${variable}%`).join(
+                resolveVariables(varReplacement, vars, limit - 1)
+            );
         }
     }
 
-    if (varExpanded && limit > 0) {
-        return resolveVariables(text, vars, limit - 1);
-    } else {
-        return text;
-    }
+    return text;
 }
 
 /**
  * Gets the corresponding message for the given project from a shortcut
  * @param {string} shortcut The shortcut of the message
- * @param {project} project The project the current ticket is in
+ * @param {string} project The project the current ticket is in
  */
 async function getReplacementResult(shortcut, project) {
     var insertedText = messages[project][shortcut].message;
@@ -53,8 +53,8 @@ async function getReplacementResult(shortcut, project) {
             clip = e;
         }
 
-        insertedText = insertedText.replace('%s%', clip.trim());
-        clipEnd = clipStart + clip.length;
+        insertedText = insertedText.split('%s%').join(clip.trim());
+        clipEnd = clipStart + clip.trim().length;
     }
 
     return {
@@ -86,6 +86,7 @@ function modifyWikifield(element, project, editorCount) {
 
         var shortcutInfo = document.createElement('small');
         shortcutInfo.classList.add('helper-message-shortcut');
+        shortcutInfo.setAttribute('data-mojira-helper-message', messageKey);
         shortcutInfo.textContent = `[${prefix}${messageKey}]`;
 
         var messageItem = document.createElement('a');
