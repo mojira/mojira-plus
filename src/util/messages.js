@@ -25,13 +25,17 @@ var messageDefinitions = {
 function showSuccessBadge() {
     browser.browserAction.setPopup({popup: '/src/popup/popup.html'});
     browser.browserAction.setBadgeBackgroundColor({color: '#222288'});
-    browser.browserAction.setBadgeTextColor({color: '#ffffff'});
+    if (browser.browserAction.setBadgeTextColor) {
+        browser.browserAction.setBadgeTextColor({color: '#ffffff'});
+    }
     browser.browserAction.setBadgeText({text: 'i'});
 }
 
 function showLoadingBadge() {
     browser.browserAction.setBadgeBackgroundColor({color: '#228822'});
-    browser.browserAction.setBadgeTextColor({color: '#ffffff'});
+    if (browser.browserAction.setBadgeTextColor) {
+        browser.browserAction.setBadgeTextColor({color: '#ffffff'});
+    }
     browser.browserAction.setBadgeText({text: '?'});
 }
 
@@ -42,7 +46,9 @@ function hideBadge() {
 function showErrorBadge() {
     browser.browserAction.setPopup({popup: '/src/popup/popup-error.html'});
     browser.browserAction.setBadgeBackgroundColor({color: '#882222'});
-    browser.browserAction.setBadgeTextColor({color: '#ffffff'});
+    if (browser.browserAction.setBadgeTextColor) {
+        browser.browserAction.setBadgeTextColor({color: '#ffffff'});
+    }
     browser.browserAction.setBadgeText({text: '!'});
 }
 

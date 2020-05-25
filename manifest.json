@@ -39,6 +39,7 @@
             "src/styling.css"
         ],
         "js": [
+            "lib/browser-polyfill.min.js",
             "src/util/util.js",
             "src/main.js"
         ]
