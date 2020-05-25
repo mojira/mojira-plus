@@ -12,10 +12,22 @@ import {
 } from './settings.js';
 
 /**
- * @type {
- *  variables: {[project: string]: {[variable: string]: string}};
- *  messages: {[project: string]: {[shortcut: string]: string}}
- * }
+ * @type {{
+ *      variables: {
+ *          [project: string]: {
+ *              [variable: string]: string;
+ *          };
+ *      };
+ *      messages: {
+ *          [project: string]: {
+ *              [shortcut: string]: {
+ *                  name: string;
+ *                  message: string;
+ *                  messageKey: string;
+ *              };
+ *          };
+ *      };
+ *  }}
  */
 var messageDefinitions = {
     variables: {},
@@ -25,13 +37,17 @@ var messageDefinitions = {
 function showSuccessBadge() {
     browser.browserAction.setPopup({popup: '/src/popup/popup.html'});
     browser.browserAction.setBadgeBackgroundColor({color: '#222288'});
-    browser.browserAction.setBadgeTextColor({color: '#ffffff'});
+    if (browser.browserAction.setBadgeTextColor) {
+        browser.browserAction.setBadgeTextColor({color: '#ffffff'});
+    }
     browser.browserAction.setBadgeText({text: 'i'});
 }
 
 function showLoadingBadge() {
     browser.browserAction.setBadgeBackgroundColor({color: '#228822'});
-    browser.browserAction.setBadgeTextColor({color: '#ffffff'});
+    if (browser.browserAction.setBadgeTextColor) {
+        browser.browserAction.setBadgeTextColor({color: '#ffffff'});
+    }
     browser.browserAction.setBadgeText({text: '?'});
 }
 
@@ -42,7 +58,9 @@ function hideBadge() {
 function showErrorBadge() {
     browser.browserAction.setPopup({popup: '/src/popup/popup-error.html'});
     browser.browserAction.setBadgeBackgroundColor({color: '#882222'});
-    browser.browserAction.setBadgeTextColor({color: '#ffffff'});
+    if (browser.browserAction.setBadgeTextColor) {
+        browser.browserAction.setBadgeTextColor({color: '#ffffff'});
+    }
     browser.browserAction.setBadgeText({text: '!'});
 }
 
@@ -55,45 +73,48 @@ function showJSONErrorBadge() {
  * Check for updated messages
  * @param {boolean} force Whether the update check is forced or not
  */
-export async function checkForUpdates(force = false) {
-    const autoUpdate = await getAutoUpdate();
+export function checkForUpdates(force = false) {
+    return new Promise(async resolve => {
+        const autoUpdate = await getAutoUpdate();
 
-    if (force || autoUpdate) {
-        const autoUpdateInterval = await getAutoUpdateInterval();
-        const lastUpdateCheck = await getLastUpdateCheck();
+        if (force || autoUpdate) {
+            const autoUpdateInterval = await getAutoUpdateInterval();
+            const lastUpdateCheck = await getLastUpdateCheck();
 
-        if (force || new Date() - lastUpdateCheck >= autoUpdateInterval * 1000 * 60 ) {
-            setLastUpdateCheck();
+            if (force || new Date() - lastUpdateCheck >= autoUpdateInterval * 1000 * 60 ) {
+                await setLastUpdateCheck();
 
-            showLoadingBadge();
+                showLoadingBadge();
 
-            const httpRequest = new XMLHttpRequest();
-            httpRequest.onreadystatechange = async () => {
-                if (httpRequest.readyState === XMLHttpRequest.DONE) {
-                    if (httpRequest.status === 200) {
-                        if (httpRequest.responseText !== await getLastCachedMessages()) {
-                            try {
-                                loadMessages(httpRequest.responseText);
-                                await setLastUpdate();
-                                await setLastCachedMessages(httpRequest.responseText);
-                                showSuccessBadge();
-                                await initMessages();
-                            } catch (err) {
-                                showJSONErrorBadge();
+                const httpRequest = new XMLHttpRequest();
+                httpRequest.onreadystatechange = async () => {
+                    if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                        if (httpRequest.status === 200) {
+                            if (httpRequest.responseText !== await getLastCachedMessages()) {
+                                try {
+                                    loadMessages(httpRequest.responseText);
+                                    await setLastUpdate();
+                                    await setLastCachedMessages(httpRequest.responseText);
+                                    showSuccessBadge();
+                                    await initMessages();
+                                } catch (err) {
+                                    showJSONErrorBadge();
+                                }
+                            } else {
+                                setTimeout(hideBadge, 1000);
                             }
                         } else {
-                            setTimeout(hideBadge, 1000);
+                            showErrorBadge();
                         }
-                    } else {
-                        showErrorBadge();
+                        resolve();
                     }
-                }
-            };
+                };
 
-            httpRequest.open('GET', await getUrl());
-            httpRequest.send();
+                httpRequest.open('GET', await getUrl());
+                httpRequest.send();
+            }
         }
-    }
+    });
 }
 
 export async function initMessages() {
@@ -156,14 +177,16 @@ function loadMessages(messageJson) {
                 if (!messages[msgVariant.project]) messages[msgVariant.project] = {};
                 messages[msgVariant.project][msgVariant.shortcut] = {
                     name: msgVariant.name,
-                    message: msgVariant.message
+                    message: msgVariant.message,
+                    messageKey: messageKey
                 };
             } else {
                 for (var project of msgVariant.project) {
                     if (!messages[project]) messages[project] = {};
                     messages[project][msgVariant.shortcut] = {
                         name: msgVariant.name,
-                        message: msgVariant.message
+                        message: msgVariant.message,
+                        messageKey: messageKey
                     };
                 }
             }

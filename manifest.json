@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Mojira Message Extension",
-    "version": "0.1",
+    "version": "0.2",
     
     "description": "Easily access helper messages directly on Mojira by using shortcuts. Please note that the helper messages may only be used by Mojira helpers, Mojira moderators, and Mojang staff.",
     
@@ -39,6 +39,7 @@
             "src/styling.css"
         ],
         "js": [
+            "lib/browser-polyfill.min.js",
             "src/util/util.js",
             "src/main.js"
         ]

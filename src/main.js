@@ -9,26 +9,26 @@ let prefix = 'mji-';
  * @param {number} limit The limit for the amount of resolved variables
  */
 function resolveVariables(text, vars, limit = 10) {
-    var varExpanded = false;
+    if (limit == 0) {
+        return text;
+    }
+
     for (var variable in vars) {
         var varReplacement = vars[variable];
         if (varReplacement && text.includes(`%${variable}%`)) {
-            varExpanded = true;
-            text = text.replace(`%${variable}%`, varReplacement);
+            text = text.split(`%${variable}%`).join(
+                resolveVariables(varReplacement, vars, limit - 1)
+            );
         }
     }
 
-    if (varExpanded && limit > 0) {
-        return resolveVariables(text, vars, limit - 1);
-    } else {
-        return text;
-    }
+    return text;
 }
 
 /**
  * Gets the corresponding message for the given project from a shortcut
  * @param {string} shortcut The shortcut of the message
- * @param {project} project The project the current ticket is in
+ * @param {string} project The project the current ticket is in
  */
 async function getReplacementResult(shortcut, project) {
     var insertedText = messages[project][shortcut].message;
@@ -53,8 +53,8 @@ async function getReplacementResult(shortcut, project) {
             clip = e;
         }
 
-        insertedText = insertedText.replace('%s%', clip.trim());
-        clipEnd = clipStart + clip.length;
+        insertedText = insertedText.split('%s%').join(clip.trim());
+        clipEnd = clipStart + clip.trim().length;
     }
 
     return {
@@ -78,19 +78,25 @@ function modifyWikifield(element, project, editorCount) {
     textArea.classList.add('mojira-helper-messages-textarea');
     textArea.setAttribute('helper-messages-project', project);
 
-    var dropdownList = document.createElement('ul');
-    dropdownList.classList.add('aui-list-truncate', 'helper-messages-dropdown');
+    /**
+     * @type {{
+     *  key: string,
+     *  element: Element
+     * }[]}
+     */
+    const messageDropdownItems = [];
 
-    for (var messageKey in messages[project]) {
-        var message = messages[project][messageKey];
+    for (var shortcut in messages[project]) {
+        var message = messages[project][shortcut];
 
         var shortcutInfo = document.createElement('small');
         shortcutInfo.classList.add('helper-message-shortcut');
-        shortcutInfo.textContent = `[${prefix}${messageKey}]`;
+        shortcutInfo.setAttribute('data-mojira-helper-message', shortcut);
+        shortcutInfo.textContent = `[${prefix}${shortcut}]`;
 
         var messageItem = document.createElement('a');
         messageItem.classList.add('wiki-edit-operation');
-        messageItem.setAttribute('data-mojira-helper-message', messageKey);
+        messageItem.setAttribute('data-mojira-helper-message', shortcut);
         messageItem.textContent = `${message.name} `;
         messageItem.append(shortcutInfo);
 
@@ -102,7 +108,21 @@ function modifyWikifield(element, project, editorCount) {
         var messageDropdownItem = document.createElement('li');
         messageDropdownItem.append(messageItem);
 
-        dropdownList.append(messageDropdownItem);
+        messageDropdownItems.push({
+            key: message.messageKey,
+            element: messageDropdownItem
+        });
+    }
+
+    messageDropdownItems.sort((a, b) => {
+        return a.key.localeCompare(b.key);
+    });
+
+    var dropdownList = document.createElement('ul');
+    dropdownList.classList.add('aui-list-truncate', 'helper-messages-dropdown');
+
+    for (item of messageDropdownItems) {
+        dropdownList.append(item.element);
     }
 
     var dropdownElement = document.createElement('div');
@@ -170,6 +190,11 @@ async function insertText(textArea, shortcut, project) {
         cursorPos += insertedText.length;
         setCaretToPos(textArea, cursorPos);
     }
+
+    textArea.dispatchEvent(new Event('input', {
+        bubbles: true,
+        cancelable: true,
+    }));
 }
 
 /**

@@ -4,9 +4,6 @@
  */
 let storage = undefined;
 
-/**
- * @type {storage is browser.storage.StorageArea}
- */
 async function initStorage() {
     if (storage !== undefined) return;
 
@@ -144,11 +141,11 @@ export async function getLastCachedMessages() {
  * Set the last update to now
  */
 export async function setLastUpdate() {
-    await saveToStorage({lastUpdateCheck: new Date().toUTCString()});
+    await saveToStorage({lastUpdate: new Date().toUTCString()});
 }
 
 export async function getLastUpdate() {
-    return new Date(await getFromStorage('lastUpdateCheck', new Date('2020').toUTCString()));
+    return new Date(await getFromStorage('lastUpdate', new Date('2020').toUTCString()));
 }
 
 /**

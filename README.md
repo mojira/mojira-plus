@@ -7,16 +7,28 @@ This is a browser extension made for simplifying the mod and helper workflow on 
 
 On top of that, it always keeps the messages up-to-date with the latest version from the `helper-messages` repository.
 
-As of right now, the extension has only been tested in Mozilla Firefox. It is possible that it works in other browsers like Chrome or Opera as well, but those are currently unsupported.
+This extension has primarily been created for and tested in Mozilla Firefox. However, it should also work in Chromium-based browsers, such as Google Chrome, Opera, and modern versions of Microsoft Edge.
 
 ⚠ Please note that the helper messages may only be used on the bug tracker by helpers, moderators or Mojang staff. Do not use them yourself if you do not belong to one of these groups as it may confuse users regarding your role.
 
 ## Installation
-1. Download the latest version of the extension from the [releases](https://github.com/mojira/message-extension/releases) page.
-2. Open `about:addons` in your browser
-3. Click on the gear icon
-4. Select "Install Add-on from File..."
-5. Select the downloaded file
+### Firefox
+1. Select the latest version of the extension on the the [releases](https://github.com/mojira/message-extension/releases) page.
+2. Click on the `.xpi` file
+3. Follow the instructions on the popups that show up in order to install the extension
+
+You now have installed the extension successfully. If this is enabled in the browser settings, it will be automatically updated whenever there's a new version of it available.
+
+### Google Chrome and other Chromium-based browsers
+1. Select the latest version of the extension on the the [releases](https://github.com/mojira/message-extension/releases) page.
+2. Download the `.zip` file
+3. Extract the `.zip` file into a folder and place it somewhere on your system
+4. Open `chrome://extensions`
+5. Enable developer mode
+6. Click on "Load unpacked extension"
+7. Select the folder you placed the source files in
+
+You now have installed the extension successfully. It will not be automatically updated, and on every browser restart you will be warned about having developer extensions enabled.
 
 ## Usage
 When the addon recognizes a Mojira text field, it automatically highlights it in a green color to indicate that the addon is active. At the same time, it adds an additional "Add Message" button to the toolbar of that text field. You can use that button to insert messages and view all available messages along with their shortcuts.
@@ -41,10 +53,12 @@ You can configure the addon by clicking the Mojira icon in the browser's toolbar
 Issues and pull requests are always very much appreciated. If you want to help developing the extension, here are a few tips:
 
 * Run `npm i` in order to install the needed dependencies. Currently this only includes the type definitions for web extensions.
-* Run `npm i -g web-ext` in order to install some handy developer tools for web extension development.
+* Run `npm run build` in order to build the current version of the extension and to load the required dependencies into the correct folder.
 * Run `web-ext run` in order to launch a blank instance of Firefox where your addon is running. The addon is reloaded every time a file is changed.
 * You can visit `about:debugging` in that Firefox instance and access the addon's console and dev interface from the "This Firefox" tab.
-* You can run `web-ext lint --self-hosted` in order to check whether the addon has any issues that might prevent it from being signed.
+* You can run `npm run lint` in order to check whether the addon has any issues that might prevent it from being signed.
 
 ## Publishing
 When a new version is released, it first needs to be signed by Mozilla. After this is done, the addon file is uploaded to the "releases" page and the version manifest in the `releases` branch is updated.
+
+For the Chromium version of the extension, the file from `npm run build` can directly be used.

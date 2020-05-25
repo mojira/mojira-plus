@@ -60,6 +60,7 @@ async function init() {
         await checkForUpdates(true);
         document.querySelector('#last-checked-date').textContent = (await getLastUpdateCheck()).toLocaleString();
         document.querySelector('#last-updated-date').textContent = (await getLastUpdate()).toLocaleString();
+        document.querySelector('#cached-messages').value = await getLastCachedMessages();
     });
 
     document.querySelector('#cached-messages').value = await getLastCachedMessages();
