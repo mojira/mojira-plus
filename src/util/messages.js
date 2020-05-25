@@ -73,45 +73,48 @@ function showJSONErrorBadge() {
  * Check for updated messages
  * @param {boolean} force Whether the update check is forced or not
  */
-export async function checkForUpdates(force = false) {
-    const autoUpdate = await getAutoUpdate();
+export function checkForUpdates(force = false) {
+    return new Promise(async resolve => {
+        const autoUpdate = await getAutoUpdate();
 
-    if (force || autoUpdate) {
-        const autoUpdateInterval = await getAutoUpdateInterval();
-        const lastUpdateCheck = await getLastUpdateCheck();
+        if (force || autoUpdate) {
+            const autoUpdateInterval = await getAutoUpdateInterval();
+            const lastUpdateCheck = await getLastUpdateCheck();
 
-        if (force || new Date() - lastUpdateCheck >= autoUpdateInterval * 1000 * 60 ) {
-            setLastUpdateCheck();
+            if (force || new Date() - lastUpdateCheck >= autoUpdateInterval * 1000 * 60 ) {
+                await setLastUpdateCheck();
 
-            showLoadingBadge();
+                showLoadingBadge();
 
-            const httpRequest = new XMLHttpRequest();
-            httpRequest.onreadystatechange = async () => {
-                if (httpRequest.readyState === XMLHttpRequest.DONE) {
-                    if (httpRequest.status === 200) {
-                        if (httpRequest.responseText !== await getLastCachedMessages()) {
-                            try {
-                                loadMessages(httpRequest.responseText);
-                                await setLastUpdate();
-                                await setLastCachedMessages(httpRequest.responseText);
-                                showSuccessBadge();
-                                await initMessages();
-                            } catch (err) {
-                                showJSONErrorBadge();
+                const httpRequest = new XMLHttpRequest();
+                httpRequest.onreadystatechange = async () => {
+                    if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                        if (httpRequest.status === 200) {
+                            if (httpRequest.responseText !== await getLastCachedMessages()) {
+                                try {
+                                    loadMessages(httpRequest.responseText);
+                                    await setLastUpdate();
+                                    await setLastCachedMessages(httpRequest.responseText);
+                                    showSuccessBadge();
+                                    await initMessages();
+                                } catch (err) {
+                                    showJSONErrorBadge();
+                                }
+                            } else {
+                                setTimeout(hideBadge, 1000);
                             }
                         } else {
-                            setTimeout(hideBadge, 1000);
+                            showErrorBadge();
                         }
-                    } else {
-                        showErrorBadge();
+                        resolve();
                     }
-                }
-            };
+                };
 
-            httpRequest.open('GET', await getUrl());
-            httpRequest.send();
+                httpRequest.open('GET', await getUrl());
+                httpRequest.send();
+            }
         }
-    }
+    });
 }
 
 export async function initMessages() {
