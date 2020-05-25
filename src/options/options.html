@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <script type="module" src="options.js"></script>
+        <style>
+            .panel {
+                padding: 2em;
+            }
+
+            .subpanel {
+                margin-top: 1em;
+                margin-left: 2em;
+                margin-bottom: 2em;
+            }
+
+            .group:not(:last-child) {
+                margin-bottom: 1em;
+            }
+
+            textarea, #url {
+                width: 100%;
+            }
+
+            #cached-messages {
+                margin-top: 0.5em;
+            }
+
+            textarea {
+                resize: vertical;
+                font-family: monospace;
+                height: 500px;
+            }
+
+            label {
+                vertical-align: middle;
+            }
+
+            .hidden {
+                display: none;
+            }
+
+            .important {
+                color: #aa2222;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="panel browser-style">
+            <div class=group>
+                <b>General settings</b>
+            </div>
+
+            <div class="group browser-style">
+                <input id=sync name=sync type=checkbox>
+                <label for=sync>Synchronize settings across devices (if supported by the browser)</label>
+            </div>
+            
+            <div class="group browser-style">
+                <label for=prefix>Shortcut prefix</label><br>
+                <input class=browser-style id=prefix name=prefix type=text>
+            </div>
+
+            <div class=group>
+                <b>Select messages source</b>
+            </div>
+
+            <input id=remote name=msgsource type=radio><label for=remote>Use messages from an URL</label><br>
+            <div id=remote-subpanel class="subpanel browser-style">
+                <div class="group browser-style">
+                    <label for=url>Message update URL</label><br>
+                    <input class=browser-style id=url name=url type=text>
+                </div>
+                <div class="group browser-style">
+                    <input id=auto-update name=auto-update type=checkbox>
+                    <label for=auto-update>
+                        Automatically check for message updates every
+                            <input class=browser-style id=auto-update-interval name=auto-update-interval type=number size=5 min=1>
+                        minutes
+                    </label>
+                </div>
+                <div class="group browser-style">
+                    <button id="check-for-updates" class=browser-style>Check for updates</button>
+                    <small>
+                        Last checked
+                        <span id="last-checked-date">[unknown]</span>
+                        / Last updated
+                        <span id="last-updated-date">[unknown]</span>
+                    </small>
+                </div>
+                <div class="group browser-style">
+                    Last cached messages
+                    <textarea class="browser-style" id="cached-messages" readonly="readonly"></textarea>
+                </div>
+            </div>
+            <input id=custom name=msgsource type=radio><label for=custom>Use custom messages</label><br>
+            <div id=custom-subpanel class="subpanel browser-style">
+                You can use a custom message configuration here. This must be the JSON representation of the <code><a href="https://github.com/mojira/helper-messages/blob/master/assets/messages.yml">messages.yml</a></code> file.
+                <span class="important">However, please note that changing this setting may prevent the extension from working correctly if it is not properly formatted.</span><br><br>
+                <textarea class=browser-style id=custom-messages></textarea><br>
+                <button class=browser-style id=save-custom-messages>Save custom messages</button><br>
+                <small id="custom-messages-feedback" class="hidden">test</small>
+            </div>
+        </div>
+    </body>
+</html>

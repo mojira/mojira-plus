@@ -1,0 +1,52 @@
+{
+    "manifest_version": 2,
+    "name": "Mojira Message Extension",
+    "version": "0.1",
+    
+    "description": "Easily access helper messages directly on Mojira by using shortcuts. Please note that the helper messages may only be used by Mojira helpers, Mojira moderators, and Mojang staff.",
+    
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "message-extension@mojira.github.io",
+            "update_url": "https://raw.githubusercontent.com/mojira/message-extension/releases/updates.json",
+            "strict_min_version": "68.0"
+        }
+    },      
+
+    "icons": {
+        "48": "icons/mojira-logo-48.png",
+        "96": "icons/mojira-logo-96.png"
+    },
+
+    "background": {
+        "page": "src/background.html"
+    },
+
+    "options_ui": {
+        "page": "src/options/options.html",
+        "browser_style": true
+    },
+
+    "browser_action": {
+        "default_icon": "icons/mojira-logo-32.png",
+        "default_title": "Mojira Helper Messages",
+        "browser_style": true
+    },
+
+    "content_scripts": [{
+        "matches": ["*://bugs.mojang.com/*"],
+        "css": [
+            "src/styling.css"
+        ],
+        "js": [
+            "src/util/util.js",
+            "src/main.js"
+        ]
+    }],
+
+    "permissions": [
+        "alarms",
+        "clipboardRead",
+        "storage"
+    ]
+}
