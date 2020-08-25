@@ -14,8 +14,8 @@
     },      
 
     "icons": {
-        "48": "icons/mojira-logo-48.png",
-        "96": "icons/mojira-logo-96.png"
+        "48": "icons/mojira-logo-48-new.png",
+        "96": "icons/mojira-logo-96-new.png"
     },
 
     "background": {
@@ -28,7 +28,7 @@
     },
 
     "browser_action": {
-        "default_icon": "icons/mojira-logo-32.png",
+        "default_icon": "icons/mojira-logo-32-new.png",
         "default_title": "Mojira Helper Messages",
         "browser_style": true
     },
