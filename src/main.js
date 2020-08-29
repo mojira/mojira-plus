@@ -273,4 +273,4 @@ function init() {
     prefix = await browser.runtime.sendMessage('prefix-request');
 
     init();
-})();
+});
