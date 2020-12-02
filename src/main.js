@@ -46,11 +46,11 @@ async function getReplacementResult(shortcut, project) {
         includesClip = true;
         clipStart = insertedText.indexOf('%s%');
 
-        var clip = '';
+        var clip = '<error: clipboard contents could not be inserted>';
         try {
             clip = await navigator.clipboard.readText();
         } catch (e) {
-            clip = e;
+            console.error(e);
         }
 
         insertedText = insertedText.split('%s%').join(clip.trim());
