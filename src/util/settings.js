@@ -158,3 +158,19 @@ export async function setCustomMessages(customMessages) {
 export async function getCustomMessages() {
     return await getFromStorage('customMessages', '{"variables":{},"messages":{}}');
 }
+
+/**
+ * @param {string} popupMessage The current popup message
+ */
+export async function setPopupMessage(popupMessage) {
+    await saveToStorage({popupMessage});
+}
+
+export async function getPopupMessage() {
+    return await getFromStorage(
+        'popupMessage',
+        '<b>Error: Could not load popup message.</b><br>'
+            + 'Internal extension communication is not possible! Try disabling the extension and enabling it again.<br>'
+            + 'If the issue persists, try restarting your browser.'
+    );
+}

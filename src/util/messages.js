@@ -1,3 +1,4 @@
+import { hideBadge, showErrorBadge, showLoadingBadge, showSuccessBadge } from './badge.js';
 import {
     getAutoUpdate,
     getAutoUpdateInterval,
@@ -29,45 +30,10 @@ import {
  *      };
  *  }}
  */
-var messageDefinitions = {
+let messageDefinitions = {
     variables: {},
     messages: {}
 };
-
-function showSuccessBadge() {
-    browser.browserAction.setPopup({popup: '/src/popup/popup.html'});
-    browser.browserAction.setBadgeBackgroundColor({color: '#222288'});
-    if (browser.browserAction.setBadgeTextColor) {
-        browser.browserAction.setBadgeTextColor({color: '#ffffff'});
-    }
-    browser.browserAction.setBadgeText({text: 'i'});
-}
-
-function showLoadingBadge() {
-    browser.browserAction.setBadgeBackgroundColor({color: '#228822'});
-    if (browser.browserAction.setBadgeTextColor) {
-        browser.browserAction.setBadgeTextColor({color: '#ffffff'});
-    }
-    browser.browserAction.setBadgeText({text: '?'});
-}
-
-function hideBadge() {
-    browser.browserAction.setBadgeText({text: ''});
-}
-
-function showErrorBadge() {
-    browser.browserAction.setPopup({popup: '/src/popup/popup-error.html'});
-    browser.browserAction.setBadgeBackgroundColor({color: '#882222'});
-    if (browser.browserAction.setBadgeTextColor) {
-        browser.browserAction.setBadgeTextColor({color: '#ffffff'});
-    }
-    browser.browserAction.setBadgeText({text: '!'});
-}
-
-function showJSONErrorBadge() {
-    showErrorBadge();
-    browser.browserAction.setPopup({popup: '/src/popup/popup-error-invalid-json.html'});
-}
 
 /**
  * Check for updated messages
@@ -84,7 +50,7 @@ export function checkForUpdates(force = false) {
             if (force || new Date() - lastUpdateCheck >= autoUpdateInterval * 1000 * 60 ) {
                 await setLastUpdateCheck();
 
-                showLoadingBadge();
+                await showLoadingBadge();
 
                 const httpRequest = new XMLHttpRequest();
                 httpRequest.onreadystatechange = async () => {
@@ -95,16 +61,16 @@ export function checkForUpdates(force = false) {
                                     loadMessages(httpRequest.responseText);
                                     await setLastUpdate();
                                     await setLastCachedMessages(httpRequest.responseText);
-                                    showSuccessBadge();
+                                    await showSuccessBadge('Helper messages have been updated.<br>You may need to reload open tabs in order for the change to take effect.');
                                     await initMessages();
                                 } catch (err) {
-                                    showJSONErrorBadge();
+                                    await showErrorBadge('An error occurred because the messages are invalid JSON.');
                                 }
                             } else {
-                                setTimeout(hideBadge, 1000);
+                                setTimeout(async () => await hideBadge(), 1000);
                             }
                         } else {
-                            showErrorBadge();
+                            await showErrorBadge(`An error occurred while trying to check whether the helper messages were updated.<br>The server returned status code ${httpRequest.status} ${httpRequest.statusText}.`);
                         }
                         resolve();
                     }
@@ -132,7 +98,7 @@ export async function getMessages() {
     try {
         await initMessages();
     } catch {
-        showJSONErrorBadge();
+        await showErrorBadge('An error occurred because the messages are invalid JSON.');
     }
     return messageDefinitions;
 }
