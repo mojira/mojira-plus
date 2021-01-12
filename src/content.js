@@ -242,6 +242,9 @@ async function replaceText(textArea, project) {
         } else {
             setCaretToPos(textArea, cursorPos);
         }
+
+        // Fix text area not resizing properly
+        textArea.dispatchEvent(new KeyboardEvent('keyup'));
     }
 }
 
