@@ -100,9 +100,9 @@ function modifyWikifield(element, project, editorCount) {
         messageItem.textContent = `${message.name} `;
         messageItem.append(shortcutInfo);
 
-        messageItem.addEventListener('click', event => {
+        messageItem.addEventListener('click', async event => {
             var shortcut = event.target.getAttribute('data-mojira-helper-message');
-            insertText(textArea, shortcut, project);
+            await insertText(textArea, shortcut, project);
         });
 
         var messageDropdownItem = document.createElement('li');
@@ -247,30 +247,57 @@ async function replaceText(textArea, project) {
 
 function init() {
     var editorCount = 0;
-    setInterval(function() {
-        document.querySelectorAll('.jira-wikifield:not(.mojira-helper-messages-field)').forEach(element => {
-            modifyWikifield(
-                element,
-                element.getAttribute('issue-key').split('-')[0].toLowerCase(),
-                editorCount++
-            );
+    setInterval(() => {
+        document.querySelectorAll('.jira-wikifield:not(.mojira-helper-messages-field)').forEach(async element => {
+            try {
+                modifyWikifield(
+                    element,
+                    element.getAttribute('issue-key').split('-')[0].toLowerCase(),
+                    editorCount++
+                );
+            } catch (error) {
+                console.error(error);
+                try {
+                    await browser.runtime.sendMessage({id: 'show-error', errorMessage: error.message});
+                } catch (err) {
+                    console.error(err);
+                }
+            }
         });
     }, 1000);
     
-    document.addEventListener('keyup', function(event) {
+    document.addEventListener('keyup', async event => {
         var element = event.target;
-        if (element instanceof HTMLTextAreaElement && element.classList.contains('mojira-helper-messages-textarea')) {
-            replaceText(element, element.getAttribute('helper-messages-project'));
+        try {
+            if (element instanceof HTMLTextAreaElement && element.classList.contains('mojira-helper-messages-textarea')) {
+                await replaceText(element, element.getAttribute('helper-messages-project'));
+            }
+        } catch (error) {
+            console.error(error);
+            try {
+                await browser.runtime.sendMessage({id: 'show-error', errorMessage: error.message});
+            } catch (err) {
+                console.error(err);
+            }
         }
     });
 }
 
 (async () => {
-    const messagesReply = await browser.runtime.sendMessage('messages-request');
-    variables = messagesReply.variables;
-    messages = messagesReply.messages;
+    try {
+        const messagesReply = await browser.runtime.sendMessage({id: 'messages-request'});
+        variables = messagesReply.variables;
+        messages = messagesReply.messages;
 
-    prefix = await browser.runtime.sendMessage('prefix-request');
+        prefix = await browser.runtime.sendMessage({id: 'prefix-request'});
 
-    init();
+        init();
+    } catch (err) {
+        console.error(err);
+        try {
+            await browser.runtime.sendMessage({id: 'show-error', errorMessage: err.message});
+        } catch (err2) {
+            console.error('Error while reporting error message:', err2);
+        }
+    }
 })();
