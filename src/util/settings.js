@@ -169,8 +169,8 @@ export async function setPopupMessage(popupMessage) {
 export async function getPopupMessage() {
     return await getFromStorage(
         'popupMessage',
-        '<b>Error: Could not load popup message.</b><br>'
-            + 'Internal extension communication is not possible! Try disabling the extension and enabling it again.<br>'
+        '*Error: Could not load popup message.*\n'
+            + 'Internal extension communication is not possible! Try disabling the extension and enabling it again.\n'
             + 'If the issue persists, try restarting your browser.'
     );
 }
