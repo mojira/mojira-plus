@@ -61,16 +61,24 @@ export function checkForUpdates(force = false) {
                                     loadMessages(httpRequest.responseText);
                                     await setLastUpdate();
                                     await setLastCachedMessages(httpRequest.responseText);
-                                    await showSuccessBadge('Helper messages have been updated.<br>You may need to reload open tabs in order for the change to take effect.');
+                                    await showSuccessBadge(
+                                        'Helper messages have been updated.\n'
+                                        + 'You may need to reload open tabs in order for the change to take effect.'
+                                    );
                                     await initMessages();
                                 } catch (err) {
-                                    await showErrorBadge('An error occurred because the messages are invalid JSON.');
+                                    await showErrorBadge(
+                                        'An error occurred because the messages are invalid JSON.'
+                                    );
                                 }
                             } else {
                                 setTimeout(async () => await hideBadge(), 1000);
                             }
                         } else {
-                            await showErrorBadge(`An error occurred while trying to check whether the helper messages were updated.<br>The server returned status code ${httpRequest.status} ${httpRequest.statusText}.`);
+                            await showErrorBadge(
+                                'An error occurred while trying to check whether the helper messages were updated.\n'
+                                + `The server returned status code ${httpRequest.status} ${httpRequest.statusText}.`
+                            );
                         }
                         resolve();
                     }
@@ -98,7 +106,9 @@ export async function getMessages() {
     try {
         await initMessages();
     } catch {
-        await showErrorBadge('An error occurred because the messages are invalid JSON.');
+        await showErrorBadge(
+            'An error occurred because the messages are invalid JSON.'
+        );
     }
     return messageDefinitions;
 }
