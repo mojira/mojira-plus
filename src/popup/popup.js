@@ -33,15 +33,30 @@ const defaultPopupMessage = '*Error: Could not retreive popup message.*\n'
 function htmlifyLineBreaks(input) {
     const lines = input.split('\n');
     const elements = [];
+    let inBlock = false;
     lines.forEach((elem, i) => {
         if (/^\*(.+)\*$/.test(elem)) {
             const element = document.createElement('b');
             element.textContent = elem.match(/^\*(.+)\*$/)[1];
             elements.push(element);
+        } else if (/^```$/.test(elem)) {
+            inBlock = !inBlock;
+            if (inBlock) {
+                const element = document.createElement('pre');
+                elements.push(element);
+            } else {
+                /** @type {HTMLPreElement} */
+                const block = elements[elements.length - 1];
+                block.textContent = block.textContent.replace(/\n+$/, '');
+            }
+        } else if (inBlock) {
+            /** @type {HTMLPreElement} */
+            const block = elements[elements.length - 1];
+            block.textContent += elem + '\n';
         } else {
             elements.push(document.createTextNode(elem))
         }
-        if (i < lines.length - 1) {
+        if (i < lines.length - 1 && !inBlock) {
             elements.push(document.createElement('br'));
         }
     });

@@ -96,8 +96,12 @@ function getDropdownList(textArea, project) {
         messageItem.append(shortcutInfo);
 
         messageItem.addEventListener('click', async event => {
-            var shortcut = event.target.getAttribute('data-mojira-helper-message');
-            await insertText(textArea, shortcut, project);
+            try {
+                var shortcut = event.target.getAttribute('data-mojira-helper-message');
+                await insertText(textArea, shortcut, project);
+            } catch (error) {
+                sendErrorMessage(error);
+            }
         });
 
         var messageDropdownItem = document.createElement('li');
@@ -207,8 +211,12 @@ function modifyWikifield(element, project, editorCount) {
         textArea.classList.add('mojira-helper-messages-textarea-shortcut-only');
         
         setTimeout(() => {
-            if (addDropdownToWikifield(element, textArea, project, editorCount)) {
-                textArea.classList.remove('mojira-helper-messages-textarea-shortcut-only');
+            try {
+                if (addDropdownToWikifield(element, textArea, project, editorCount)) {
+                    textArea.classList.remove('mojira-helper-messages-textarea-shortcut-only');
+                }
+            } catch (error) {
+                sendErrorMessage(error);
             }
         }, 1000);
     }
@@ -311,12 +319,7 @@ function init() {
                     editorCount++
                 );
             } catch (error) {
-                console.error(error);
-                try {
-                    await browser.runtime.sendMessage({id: 'show-error', errorMessage: error.message});
-                } catch (err) {
-                    console.error(err);
-                }
+                await sendErrorMessage(error);
             }
         });
     }, 1000);
@@ -328,12 +331,7 @@ function init() {
                 await replaceText(element, element.getAttribute('helper-messages-project'));
             }
         } catch (error) {
-            console.error(error);
-            try {
-                await browser.runtime.sendMessage({id: 'show-error', errorMessage: error.message});
-            } catch (err) {
-                console.error(err);
-            }
+            await sendErrorMessage(error);
         }
     });
 }
@@ -347,12 +345,7 @@ function init() {
         prefix = await browser.runtime.sendMessage({id: 'prefix-request'});
 
         init();
-    } catch (err) {
-        console.error(err);
-        try {
-            await browser.runtime.sendMessage({id: 'show-error', errorMessage: err.message});
-        } catch (err2) {
-            console.error('Error while reporting error message:', err2);
-        }
+    } catch (error) {
+        await sendErrorMessage(error);
     }
 })();
