@@ -29,6 +29,7 @@ import { getAutoUpdateInterval, getPrefix, setPopupMessage } from './util/settin
             case 'prefix-request':
                 return getPrefix();
             case 'show-error':
+                console.error(`Received error message: ${ message.errorMessage }`);
                 await showErrorBadge(message.errorMessage);
                 return;
         }
