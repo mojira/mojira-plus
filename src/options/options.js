@@ -15,7 +15,9 @@ import {
     setCustomMessages,
     getLastUpdateCheck,
     getLastUpdate,
-    getLastCachedMessages
+    getLastCachedMessages,
+    getPostponeAction,
+    setPostponeAction
 } from '../util/settings.js';
 import { checkForUpdates } from '../util/messages.js';
 
@@ -29,6 +31,21 @@ async function init() {
     document.querySelector('#prefix').value = await getPrefix();
     document.querySelector('#prefix').addEventListener('change', async event => {        
         await setPrefix(event.target.value);
+    });
+
+    document.querySelector('#postponeHide').checked = await getPostponeAction() === 'hide';
+    document.querySelector('#postponeHide').addEventListener('click', async () => {
+        await setPostponeAction('hide');
+    });
+    
+    document.querySelector('#postponeWarn').checked = await getPostponeAction() === 'warn';
+    document.querySelector('#postponeWarn').addEventListener('click', async () => {
+        await setPostponeAction('warn');
+    });
+    
+    document.querySelector('#postponeNone').checked = await getPostponeAction() === 'none';
+    document.querySelector('#postponeNone').addEventListener('click', async () => {
+        await setPostponeAction('none');
     });
 
     document.querySelector(`#${ await getMessageSource() }`).checked = true;

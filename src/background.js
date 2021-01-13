@@ -1,6 +1,6 @@
 import { showErrorBadge } from './util/badge.js';
 import { getMessages, checkForUpdates } from './util/messages.js';
-import { getAutoUpdateInterval, getPrefix, setPopupMessage } from './util/settings.js';
+import { getAutoUpdateInterval, getPostponeAction, getPrefix, setPopupMessage } from './util/settings.js';
 
 (async () => {
     await setPopupMessage(undefined);
@@ -25,9 +25,11 @@ import { getAutoUpdateInterval, getPrefix, setPopupMessage } from './util/settin
     browser.runtime.onMessage.addListener(async message => {
         switch (message.id) {
             case 'messages-request':
-                return getMessages();
+                return await getMessages();
             case 'prefix-request':
-                return getPrefix();
+                return await getPrefix();
+            case 'postponeaction-request':
+                return await getPostponeAction();
             case 'show-error':
                 console.error(`Received error message: ${ message.errorMessage }`);
                 await showErrorBadge(message.errorMessage);

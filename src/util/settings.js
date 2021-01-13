@@ -69,6 +69,20 @@ export async function setPrefix(prefix) {
 }
 
 /**
+ * @returns {Promise<'hide' | 'warn' | 'none'>}
+ */
+export async function getPostponeAction() {
+    return await getFromStorage('postponeAction', 'warn');
+}
+
+/**
+ * @param {Promise<'hide' | 'warn' | 'none'>} postponeAction How to handle the postpone button
+ */
+export async function setPostponeAction(postponeAction) {
+    await saveToStorage({postponeAction});
+}
+
+/**
  * @returns {Promise<'remote' | 'custom'>} Where the helper messages come from
  */
 export async function getMessageSource() {
