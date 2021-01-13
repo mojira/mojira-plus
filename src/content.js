@@ -1,6 +1,7 @@
 let variables = {};
 let messages = {};
 let prefix = 'mji-';
+let postponeAction = 'none';
 
 /**
  * Resolves all variables in the given string up to a certain point
@@ -308,6 +309,30 @@ async function replaceText(textArea, project) {
     }
 }
 
+function handlePostponeButton() {
+    /** @type {HTMLAnchorElement} */
+    let element = document.querySelector('#action_id_771, #action_id_781');
+
+    if (element !== null && !element.classList.contains('mojira-extension-postpone')) {
+        element.classList.add('mojira-extension-postpone');
+
+        if (postponeAction === 'hide') {
+            element.remove();
+        } else if (postponeAction === 'warn') {
+            const href = element.getAttribute('href');
+            element.removeAttribute('href');
+
+            element.addEventListener('click', event => {
+                event.preventDefault();
+                const result = confirm('Do you really want to postpone this issue?');
+                if (result) {
+                    window.location = href;
+                }
+            });
+        }
+    }
+}
+
 function init() {
     var editorCount = 0;
     setInterval(() => {
@@ -322,6 +347,12 @@ function init() {
                 await sendErrorMessage(error);
             }
         });
+
+        try {
+            handlePostponeButton();
+        } catch (error) {
+            sendErrorMessage(error);
+        }
     }, 1000);
     
     document.addEventListener('keyup', async event => {
@@ -334,6 +365,8 @@ function init() {
             await sendErrorMessage(error);
         }
     });
+
+    handlePostponeButton();
 }
 
 (async () => {
@@ -343,6 +376,8 @@ function init() {
         messages = messagesReply.messages;
 
         prefix = await browser.runtime.sendMessage({id: 'prefix-request'});
+
+        postponeAction = await browser.runtime.sendMessage({id: 'postponeaction-request'});
 
         init();
     } catch (error) {
