@@ -11,7 +11,7 @@
 
             .subpanel {
                 margin-top: 1em;
-                margin-left: 2em;
+                margin-left: 3em;
                 margin-bottom: 2em;
             }
 
@@ -44,12 +44,16 @@
             .important {
                 color: #aa2222;
             }
+
+            .spacer {
+                height: 1em;
+            }
         </style>
     </head>
     <body>
         <div class="panel browser-style">
             <div class=group>
-                <b>General settings</b>
+                <h2>General settings</h2>
             </div>
 
             <div class="group browser-style">
@@ -69,15 +73,17 @@
                 <input id=postponeNone name=postpone type=radio><label for=postponeNone>Postpone the issue immediately when clicking the Postpone button</label><br>
             </div>
 
+            <div class=spacer></div>
+
             <div class=group>
-                <b>Select messages source</b>
+                <h2>Message source</h2>
             </div>
 
             <input id=remote name=msgsource type=radio><label for=remote>Use messages from an URL</label><br>
             <div id=remote-subpanel class="subpanel browser-style">
                 <div class="group browser-style">
                     <label for=url>Message update URL</label><br>
-                    <input class=browser-style id=url name=url type=text>
+                    <input class="browser-style textinput" id=url name=url type=text>
                 </div>
                 <div class="group browser-style">
                     <input id=auto-update name=auto-update type=checkbox>
@@ -110,8 +116,10 @@
                 <small id="custom-messages-feedback" class="hidden">test</small>
             </div>
 
+            <div class=spacer></div>
+
             <div class=group>
-                <b>Advanced settings</b>
+                <h2>Advanced settings</h2>
             </div>
 
             <div class="group browser-style">
@@ -122,6 +130,10 @@
                 <div class="group browser-style">
                     <label for=commit-url>Commits URL</label><br>
                     <input class="browser-style textinput" id=commit-url name=commit-url type=text>
+                </div>
+                <div class="group browser-style">
+                    <label for=last-commit>Last commit SHA (default: "none")</label><br>
+                    <input class="browser-style textinput" id=last-commit name=last-commit type=text>
                 </div>
             </div>
         </div>

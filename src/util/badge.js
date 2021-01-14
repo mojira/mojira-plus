@@ -1,9 +1,9 @@
-import { setPopupMessage } from "./settings.js";
+import { setPopupMessage } from './settings.js';
 
 /**
  * @type {'error' | 'loading' | 'success' | 'none'}
  */
-var currentBadge = 'none';
+let currentBadge = 'none';
 
 /**
  * Shows a success badge on the extension icon
@@ -55,6 +55,8 @@ export async function showErrorBadge(message) {
 }
 
 export async function hideBadge() {
+    browser.browserAction.setPopup({popup: ''});
+
     browser.browserAction.setBadgeText({text: ''});
 
     currentBadge = 'none';

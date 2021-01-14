@@ -1,8 +1,8 @@
+import { hideBadge } from '../util/badge.js';
 import { getCommitUpdatesEnabled, getPopupMessage, getLastCommits } from '../util/settings.js';
 
-document.querySelector('.dismiss-button').addEventListener('click', () => {
-    browser.browserAction.setPopup({popup: ''});
-    browser.browserAction.setBadgeText({text: ''});
+document.querySelector('.dismiss-button').addEventListener('click', async () => {
+    await hideBadge();
     window.close();
 });
 
@@ -77,7 +77,6 @@ async function htmlifyLineBreaks(input) {
 async function getCommits() {
     try {
         const commits = JSON.parse(await getLastCommits());
-        console.debug(commits);
         const list = document.createElement('ul');
         for (const commit of commits) {
             const elem = document.createElement('li');
