@@ -174,6 +174,28 @@ export async function getCustomMessages() {
 }
 
 /**
+ * @param {boolean} commitUpdatesEnabled Whether commit updates should be enabled
+ */
+export async function setCommitUpdatesEnabled(commitUpdatesEnabled) {
+    await saveToStorage({commitUpdatesEnabled});
+}
+
+export async function getCommitUpdatesEnabled() {
+    return await getFromStorage('commitUpdatesEnabled', true);
+}
+
+/**
+ * @param {string} commitUrl The url to the commits JSON file
+ */
+export async function setCommitUrl(commitUrl) {
+    await saveToStorage({commitUrl});
+}
+
+export async function getCommitUrl() {
+    return await getFromStorage('commitUrl', 'https://api.github.com/repos/mojira/helper-messages/commits');
+}
+
+/**
  * @param {string} popupMessage The current popup message
  */
 export async function setPopupMessage(popupMessage) {
@@ -187,4 +209,26 @@ export async function getPopupMessage() {
             + 'Internal extension communication is not possible! Try disabling the extension and enabling it again.\n'
             + 'If the issue persists, try restarting your browser.'
     );
+}
+
+/**
+ * @param {string} commit The sha of the last commit
+ */
+export async function setLastCommit(lastCommit) {
+    await saveToStorage({lastCommit});
+}
+
+export async function getLastCommit() {
+    return await getFromStorage('lastCommit', 'none');
+}
+
+/**
+ * @param {string} lastCommits The JSON representation of the last commits
+ */
+export async function setLastCommits(lastCommits) {
+    await saveToStorage({lastCommits});
+}
+
+export async function getLastCommits() {
+    return await getFromStorage('lastCommits', '[]');
 }

@@ -17,7 +17,11 @@ import {
     getLastUpdate,
     getLastCachedMessages,
     getPostponeAction,
-    setPostponeAction
+    setPostponeAction,
+    getCommitUpdatesEnabled,
+    getCommitUrl,
+    setCommitUpdatesEnabled,
+    setCommitUrl
 } from '../util/settings.js';
 import { checkForUpdates } from '../util/messages.js';
 
@@ -97,6 +101,16 @@ async function init() {
         } catch (err) {
             feedback.textContent = `Error when saving custom messages: ${err}`;
         }
+    });
+
+    document.querySelector('#commit-updates').checked = await getCommitUpdatesEnabled();
+    document.querySelector('#commit-updates').addEventListener('click', async () => {
+        setCommitUpdatesEnabled(document.querySelector('#commit-updates').checked);
+    });
+
+    document.querySelector('#commit-url').value = await getCommitUrl();
+    document.querySelector('#commit-url').addEventListener('change', async () => {
+        setCommitUrl(document.querySelector('#commit-url').value);
     });
 }
 
