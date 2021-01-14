@@ -9,7 +9,12 @@ import {
     getUrl,
     setLastUpdate,
     getMessageSource,
-    getCustomMessages
+    getCustomMessages,
+    getCommitUpdatesEnabled,
+    getLastCommit,
+    getCommitUrl,
+    setLastCommit,
+    setLastCommits
 } from './settings.js';
 
 /**
@@ -34,6 +39,55 @@ let messageDefinitions = {
     variables: {},
     messages: {}
 };
+
+function updateLatestCommits() {
+    return new Promise(async resolve => {
+        const lastKnownSha = await getLastCommit();
+
+        if (!(await getCommitUpdatesEnabled())) {
+            await setLastCommit('none');
+            return;
+        }
+
+        const httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = async () => {
+            if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                if (httpRequest.status === 200) {
+                    const response = httpRequest.responseText;
+                    try {
+                        const json = JSON.parse(response);
+
+                        await setLastCommit(json[0].sha || 'none');
+
+                        if (lastKnownSha === 'none') return;
+
+                        const commits = [];
+
+                        for (const commit of json) {
+                            if (commit.sha === lastKnownSha) break;
+
+                            commits.push({
+                                message: commit.commit.message.split('\n')[0],
+                                url: commit.html_url
+                            });
+                        }
+
+                        await setLastCommits(JSON.stringify(commits));
+                    } catch (error) {
+                        console.error(error);
+                    }
+                } else {
+                    console.error(httpRequest);
+                }
+
+                resolve();
+            }
+        };
+
+        httpRequest.open('GET', await getCommitUrl());
+        httpRequest.send();
+    });
+}
 
 /**
  * Check for updated messages
@@ -61,12 +115,25 @@ export function checkForUpdates(force = false) {
                                     loadMessages(httpRequest.responseText);
                                     await setLastUpdate();
                                     await setLastCachedMessages(httpRequest.responseText);
-                                    await showSuccessBadge(
-                                        'Helper messages have been updated.\n'
-                                        + 'You may need to reload open tabs in order for the change to take effect.'
-                                    );
+
+                                    let successMessage = 'Helper messages have been updated.\n'
+                                        + 'You may need to reload open tabs in order for the change to take effect.';
+
+                                    const previousCommit = await getLastCommit();
+                                    
+                                    await updateLatestCommits();
+
+                                    const lastCommit = await getLastCommit();
+
+                                    if (previousCommit !== 'none' && lastCommit !== 'none' && previousCommit !== lastCommit) {
+                                        successMessage += '\n\n*Changes since the last update:*\n%commits%';
+                                    }
+
                                     await initMessages();
+
+                                    await showSuccessBadge(successMessage);
                                 } catch (err) {
+                                    console.error(err);
                                     await showErrorBadge(
                                         'An error occurred because the messages are invalid JSON.'
                                     );

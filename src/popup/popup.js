@@ -1,4 +1,4 @@
-import { getPopupMessage } from '../util/settings.js';
+import { getCommitUpdatesEnabled, getPopupMessage, getLastCommits } from '../util/settings.js';
 
 document.querySelector('.dismiss-button').addEventListener('click', () => {
     browser.browserAction.setPopup({popup: ''});
@@ -21,7 +21,8 @@ const defaultPopupMessage = '*Error: Could not retreive popup message.*\n'
     }
 
     document.querySelector('#popupMessage').textContent = '';
-    htmlifyLineBreaks(popupMessage).forEach(
+    const popupMessageHtml = await htmlifyLineBreaks(popupMessage);
+    popupMessageHtml.forEach(
         elem => document.querySelector('#popupMessage').append(elem)
     );
 })();
@@ -30,10 +31,15 @@ const defaultPopupMessage = '*Error: Could not retreive popup message.*\n'
  * Splits up a string into multiple paragraphs (along line breaks \n).
  * @param {string} input The string that should be split up
  */
-function htmlifyLineBreaks(input) {
+async function htmlifyLineBreaks(input) {
     const lines = input.split('\n');
     const elements = [];
+
+    const commitUpdatesEnabled = await getCommitUpdatesEnabled();
+    const commits = commitUpdatesEnabled ? await getCommits() : document.createTextNode('');
+
     let inBlock = false;
+
     lines.forEach((elem, i) => {
         if (/^\*(.+)\*$/.test(elem)) {
             const element = document.createElement('b');
@@ -53,6 +59,8 @@ function htmlifyLineBreaks(input) {
             /** @type {HTMLPreElement} */
             const block = elements[elements.length - 1];
             block.textContent += elem + '\n';
+        } else if (elem === '\%commits%' && commitUpdatesEnabled) {
+            elements.push(commits);
         } else {
             elements.push(document.createTextNode(elem))
         }
@@ -61,4 +69,28 @@ function htmlifyLineBreaks(input) {
         }
     });
     return elements;
+}
+
+/**
+ * @param {{message: string; url: string}[]} commits The commits to be displayed
+ */
+async function getCommits() {
+    try {
+        const commits = JSON.parse(await getLastCommits());
+        console.debug(commits);
+        const list = document.createElement('ul');
+        for (const commit of commits) {
+            const elem = document.createElement('li');
+            const link = document.createElement('a');
+            link.textContent = commit.message;
+            link.setAttribute('href', commit.url);
+            elem.append(link);
+            list.append(elem);
+        }
+        return list;
+    } catch (error) {
+        const block = document.createElement('pre');
+        block.textContent = `Error while retrieving latest commits:\n${ error.message }`;
+        return block;
+    }
 }

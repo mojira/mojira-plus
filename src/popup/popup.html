@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <base target="_blank"/>
         <meta charset="utf-8"/>
         <script type="module" src="/lib/browser-polyfill.min.js"></script>
         <script type="module" src="./popup.js"></script>
@@ -28,6 +29,19 @@
                 border-radius: 3px;
                 padding: 1em;
                 background-color: #eee;
+            }
+
+            a {
+                color: #2e72cc;
+                text-decoration: none;
+                transition: color 0.1s;
+            }
+            a:hover {
+                color: #2ecc72;
+            }
+            li {
+                margin: 0.5em;
+                text-align: left;
             }
         </style>
     </head>
