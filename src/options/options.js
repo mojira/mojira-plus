@@ -21,7 +21,8 @@ import {
     getCommitUpdatesEnabled,
     getCommitUrl,
     setCommitUpdatesEnabled,
-    setCommitUrl
+    setCommitUrl,
+    getLastCommit
 } from '../util/settings.js';
 import { checkForUpdates } from '../util/messages.js';
 
@@ -111,6 +112,11 @@ async function init() {
     document.querySelector('#commit-url').value = await getCommitUrl();
     document.querySelector('#commit-url').addEventListener('change', async () => {
         setCommitUrl(document.querySelector('#commit-url').value);
+    });
+
+    document.querySelector('#last-commit').value = await getLastCommit();
+    document.querySelector('#last-commit').addEventListener('change', async () => {
+        setCommitUrl(document.querySelector('#last-commit').value);
     });
 }
 

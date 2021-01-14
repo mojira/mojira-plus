@@ -59,7 +59,10 @@ function updateLatestCommits() {
 
                         await setLastCommit(json[0].sha || 'none');
 
-                        if (lastKnownSha === 'none') return;
+                        if (lastKnownSha === 'none') {
+                            resolve();
+                            return;
+                        }
 
                         const commits = [];
 
