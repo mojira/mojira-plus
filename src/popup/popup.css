@@ -1,0 +1,39 @@
+body {
+    min-width: 400px;
+    max-width: 800px;
+    max-height: 600px;
+}
+
+.panel {
+    margin: 2em;
+    font-family: sans-serif;
+    text-align: center;
+}
+
+#popupMessage {
+    text-align: center;
+    margin-bottom: 2em;
+}
+
+pre {
+    overflow-x: auto;
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    padding: 1em;
+    background-color: #eee;
+}
+
+a {
+    color: #2e72cc;
+    text-decoration: none;
+    transition: color 0.1s;
+}
+
+a:hover {
+    color: #2ecc72;
+}
+
+li {
+    margin: 0.5em;
+    text-align: left;
+}
