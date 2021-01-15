@@ -26,6 +26,7 @@ import {
     syncStorageAvailable
 } from '../util/storage.js';
 import { triggerMessageUpdate } from '../util/messages.js';
+import { restartAutoupdateTimer } from '../util/autoupdate.js';
 
 async function init() {
     const syncAcrossDevices = await getSyncAcrossDevices();
@@ -85,6 +86,8 @@ async function init() {
     document.querySelector('#auto-update-interval').value = await getAutoUpdateInterval();
     document.querySelector('#auto-update-interval').addEventListener('change', async event => {
         await setAutoUpdateInterval(event.target.value);
+        await triggerMessageUpdate(true, true);
+        await restartAutoupdateTimer();
     });
 
     document.querySelector('#last-checked-date').textContent = (await getLastUpdateCheck()).toLocaleString();
@@ -94,6 +97,7 @@ async function init() {
 
     document.querySelector('#check-for-updates').addEventListener('click', async () => {
         await triggerMessageUpdate(true, true);
+        await restartAutoupdateTimer();
         document.querySelector('#last-checked-date').textContent = (await getLastUpdateCheck()).toLocaleString();
         document.querySelector('#last-updated-date').textContent = (await getLastUpdate()).toLocaleString();
         document.querySelector('#cached-messages').value = await getLastCachedMessages();
