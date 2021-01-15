@@ -54,9 +54,13 @@ export async function showErrorBadge(message) {
     currentBadge = 'error';
 }
 
-export async function hideBadge() {
-    browser.browserAction.setPopup({popup: ''});
+export async function hideBadge(delay = false) {
+    if (delay) {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+    }
 
+    browser.browserAction.setPopup({popup: ''});
+    
     browser.browserAction.setBadgeText({text: ''});
 
     currentBadge = 'none';

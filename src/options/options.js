@@ -22,16 +22,27 @@ import {
     getCommitUrl,
     setCommitUpdatesEnabled,
     setCommitUrl,
-    getLastCommit
+    getLastCommit,
+    syncStorageAvailable
 } from '../util/storage.js';
 import { triggerMessageUpdate } from '../util/messages.js';
 
 async function init() {
+    const syncAcrossDevices = await getSyncAcrossDevices();
+
+    if (!syncStorageAvailable) {
+        document.querySelector('#sync').setAttribute('disabled', 'true');
+        document.querySelectorAll('.syncUnavailableWarning').forEach(elem => elem.classList.remove('hidden'));
+    }
+
     document.querySelector('#sync').checked = await getSyncAcrossDevices();
     document.querySelector('#sync').addEventListener('change', async event => {
         await setSyncAcrossDevices(event.target.checked);
+        await triggerMessageUpdate(true, true);
         location.reload();
     });
+
+    document.querySelectorAll('.syncWarning').forEach(elem => elem.classList.toggle('hidden', !syncAcrossDevices));
 
     document.querySelector('#prefix').value = await getPrefix();
     document.querySelector('#prefix').addEventListener('change', async event => {        
@@ -78,8 +89,11 @@ async function init() {
 
     document.querySelector('#last-checked-date').textContent = (await getLastUpdateCheck()).toLocaleString();
     document.querySelector('#last-updated-date').textContent = (await getLastUpdate()).toLocaleString();
+
+    document.querySelector('.last-update-info').classList.remove('hidden');
+
     document.querySelector('#check-for-updates').addEventListener('click', async () => {
-        await triggerMessageUpdate(true);
+        await triggerMessageUpdate(true, true);
         document.querySelector('#last-checked-date').textContent = (await getLastUpdateCheck()).toLocaleString();
         document.querySelector('#last-updated-date').textContent = (await getLastUpdate()).toLocaleString();
         document.querySelector('#cached-messages').value = await getLastCachedMessages();
@@ -105,18 +119,18 @@ async function init() {
     });
 
     document.querySelector('#commit-updates').checked = await getCommitUpdatesEnabled();
-    document.querySelector('#commit-updates').addEventListener('click', async () => {
-        setCommitUpdatesEnabled(document.querySelector('#commit-updates').checked);
+    document.querySelector('#commit-updates').addEventListener('click', async event => {
+        setCommitUpdatesEnabled(event.target.checked);
     });
 
     document.querySelector('#commit-url').value = await getCommitUrl();
-    document.querySelector('#commit-url').addEventListener('change', async () => {
-        setCommitUrl(document.querySelector('#commit-url').value);
+    document.querySelector('#commit-url').addEventListener('change', async event => {
+        setCommitUrl(event.target.value);
     });
 
     document.querySelector('#last-commit').value = await getLastCommit();
-    document.querySelector('#last-commit').addEventListener('change', async () => {
-        setCommitUrl(document.querySelector('#last-commit').value);
+    document.querySelector('#last-commit').addEventListener('change', async event => {
+        setCommitUrl(event.target.value);
     });
 }
 

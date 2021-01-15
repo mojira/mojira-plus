@@ -16,29 +16,6 @@ import {
 } from './storage.js';
 
 /**
- * @type {{
- *      variables: {
- *          [project: string]: {
- *              [variable: string]: string;
- *          };
- *      };
- *      messages: {
- *          [project: string]: {
- *              [shortcut: string]: {
- *                  name: string;
- *                  message: string;
- *                  messageKey: string;
- *              };
- *          };
- *      };
- *  }}
- */
-let messageDefinitions = {
-    variables: {},
-    messages: {}
-};
-
-/**
  * Process the received message update
  * @param {string} response The response returned by the server
  */
@@ -61,8 +38,6 @@ async function processMessageUpdate(response) {
             successMessage += '\n\n*Changes since the last update:*\n%commits%';
         }
 
-        await initMessages();
-
         await showSuccessBadge(successMessage);
     } catch (err) {
         console.error(err);
@@ -74,12 +49,13 @@ async function processMessageUpdate(response) {
 
 /**
  * Check for updated messages
+ * @param {boolean} silent Whether the update should be executed silently (without a badge)
  */
-function checkForMessageUpdates() {
+function checkForMessageUpdates(silent = false) {
     return new Promise(async resolve => {
         await setLastUpdateCheck();
 
-        await showLoadingBadge();
+        if (!silent) await showLoadingBadge();
 
         const httpRequest = new XMLHttpRequest();
         httpRequest.onreadystatechange = async () => {
@@ -88,7 +64,7 @@ function checkForMessageUpdates() {
                     if (httpRequest.responseText !== await getLastCachedMessages()) {
                         await processMessageUpdate(httpRequest.responseText);
                     } else {
-                        setTimeout(async () => await hideBadge(), 1000);
+                        await hideBadge(!silent);
                     }
                 } else {
                     await showErrorBadge(
@@ -108,8 +84,9 @@ function checkForMessageUpdates() {
 /**
  * Update messages if necessary
  * @param {boolean} force Whether the update check is forced or not
+ * @param {boolean} silent Whether the update should be executed silently (without a badge)
  */
-export async function triggerMessageUpdate(force = false) {
+export async function triggerMessageUpdate(force = false, silent = false) {
     const autoUpdate = await getAutoUpdate();
 
     if (force || autoUpdate) {
@@ -117,7 +94,7 @@ export async function triggerMessageUpdate(force = false) {
         const lastUpdateCheck = await getLastUpdateCheck();
 
         if (force || new Date() - lastUpdateCheck >= autoUpdateInterval * 1000 * 60 ) {
-            return await checkForMessageUpdates();
+            return await checkForMessageUpdates(silent);
         }
     }
 }

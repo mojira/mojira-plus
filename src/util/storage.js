@@ -1,29 +1,17 @@
 /**
- * Run `await initStorage()` before usage!
+ * Saves the current storage object
  * @type {browser.storage.StorageArea | undefined}
  */
 let storage = undefined;
 
-async function initStorage() {
-    if (storage !== undefined) return;
+export const syncStorageAvailable = browser.storage.sync !== undefined;
 
-    storage = (await getSyncAcrossDevices()) && browser.storage.sync ? browser.storage.sync : browser.storage.local;
-}
+async function getStorage(local = false) {
+    if (local || !syncStorageAvailable) return browser.storage.local;
 
-/**
- * @returns {Promise<boolean>} Whether the settings should be synced across devices or not
- */
-export async function getSyncAcrossDevices() {
-    const storageObj = await browser.storage.local.get('syncAcrossDevices');
-    return storageObj.syncAcrossDevices === undefined ? false : storageObj.syncAcrossDevices;
-}
+    if (storage !== undefined) return storage;
 
-/**
- * Set whether the settings should be synced or not. This setting is special since it *always* is saved in local storage.
- * @param {boolean} syncAcrossDevices Whether the settings should be synced across devices or not
- */
-export async function setSyncAcrossDevices(syncAcrossDevices) {
-    await browser.storage.local.set({syncAcrossDevices});
+    return storage = await getSyncAcrossDevices() ? browser.storage.sync : browser.storage.local;
 }
 
 /**
@@ -31,11 +19,12 @@ export async function setSyncAcrossDevices(syncAcrossDevices) {
  * @template T
  * @param {string} key The key the value is stored at
  * @param {T} def The default value of the setting
+ * @param {boolean} local Whether local storage should always be used
  * @returns {Promise<T>}
  */
-async function getFromStorage(key, def) {
+async function getFromStorage(key, def, local = false) {
     try {
-        await initStorage();
+        const storage = await getStorage(local);
         const storageObj = await storage.get(key);
         return storageObj[key] === undefined ? def : storageObj[key];
     } catch {
@@ -47,14 +36,31 @@ async function getFromStorage(key, def) {
  * Saves a setting in storage
  * @template T
  * @param {{[key: string]: T}} obj The settings to be saved
+ * @param {boolean} local Whether local storage should always be used
  */
-async function saveToStorage(obj) {
-    await initStorage();
+async function saveToStorage(obj, local = false) {
     try {
+        const storage = await getStorage(local);
         await storage.set(obj)
     } catch (err){ 
         console.error(err);
     }
+}
+
+/**
+ * @returns {Promise<boolean>} Whether the settings should be synced across devices or not
+ */
+export async function getSyncAcrossDevices() {
+    return await getFromStorage('syncAcrossDevices', false, true);
+}
+
+/**
+ * Set whether the settings should be synced or not. This setting is special since it *always* is saved in local storage.
+ * @param {boolean} syncAcrossDevices Whether the settings should be synced across devices or not
+ */
+export async function setSyncAcrossDevices(syncAcrossDevices) {
+    storage = undefined;
+    await saveToStorage({syncAcrossDevices}, true);
 }
 
 export async function getPrefix() {
@@ -133,44 +139,44 @@ export async function getAutoUpdateInterval() {
  * Set the last update check to now
  */
 export async function setLastUpdateCheck() {
-    await saveToStorage({lastUpdateCheck: new Date().toUTCString()});
+    await saveToStorage({lastUpdateCheck: new Date().toUTCString()}, true);
 }
 
 export async function getLastUpdateCheck() {
-    return new Date(await getFromStorage('lastUpdateCheck', new Date('2020').toUTCString()));
+    return new Date(await getFromStorage('lastUpdateCheck', new Date('1970').toUTCString(), true));
 }
 
 /**
  * @param {string} lastCachedMessages The last cached messages
  */
 export async function setLastCachedMessages(lastCachedMessages) {
-    await saveToStorage({lastCachedMessages});
+    await saveToStorage({lastCachedMessages}, true);
 }
 
 export async function getLastCachedMessages() {
-    return await getFromStorage('lastCachedMessages', '{"variables":{},"messages":{}}');
+    return await getFromStorage('lastCachedMessages', '{"variables":{},"messages":{}}', true);
 }
 
 /**
  * Set the last update to now
  */
 export async function setLastUpdate() {
-    await saveToStorage({lastUpdate: new Date().toUTCString()});
+    await saveToStorage({lastUpdate: new Date().toUTCString()}, true);
 }
 
 export async function getLastUpdate() {
-    return new Date(await getFromStorage('lastUpdate', new Date('2020').toUTCString()));
+    return new Date(await getFromStorage('lastUpdate', new Date('2020').toUTCString(), true));
 }
 
 /**
  * @param {string} customMessages The JSON representation of the custom message file
  */
 export async function setCustomMessages(customMessages) {
-    await saveToStorage({customMessages});
+    await saveToStorage({customMessages}, true);
 }
 
 export async function getCustomMessages() {
-    return await getFromStorage('customMessages', '{"variables":{},"messages":{}}');
+    return await getFromStorage('customMessages', '{"variables":{},"messages":{}}', true);
 }
 
 /**
@@ -196,39 +202,42 @@ export async function getCommitUrl() {
 }
 
 /**
- * @param {string} popupMessage The current popup message
- */
-export async function setPopupMessage(popupMessage) {
-    await saveToStorage({popupMessage});
-}
-
-export async function getPopupMessage() {
-    return await getFromStorage(
-        'popupMessage',
-        '*Error: Could not load popup message.*\n'
-            + 'Internal extension communication is not possible! Try disabling the extension and enabling it again.\n'
-            + 'If the issue persists, try restarting your browser.'
-    );
-}
-
-/**
  * @param {string} commit The sha of the last commit
  */
 export async function setLastCommit(lastCommit) {
-    await saveToStorage({lastCommit});
+    await saveToStorage({lastCommit}, true);
 }
 
 export async function getLastCommit() {
-    return await getFromStorage('lastCommit', 'none');
+    return await getFromStorage('lastCommit', 'none', true);
+}
+
+/*
+Storage objects used for internal extension communication
+*/
+
+/**
+ * @param {string} popupMessage The current popup message
+ */
+export async function setPopupMessage(popupMessage) {
+    await saveToStorage({popupMessage}, true);
+}
+
+export async function getPopupMessage() {
+    const popupErrorMessage = '*Error: Could not load popup message.*\n'
+        + 'Internal extension communication is not possible! Try disabling the extension and enabling it again.\n'
+        + 'If the issue persists, try restarting your browser.';
+
+    return await getFromStorage('popupMessage', popupErrorMessage, true);
 }
 
 /**
  * @param {string} lastCommits The JSON representation of the last commits
  */
 export async function setLastCommits(lastCommits) {
-    await saveToStorage({lastCommits});
+    await saveToStorage({lastCommits}, true);
 }
 
 export async function getLastCommits() {
-    return await getFromStorage('lastCommits', '[]');
+    return await getFromStorage('lastCommits', '[]', true);
 }
