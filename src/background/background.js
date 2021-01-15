@@ -1,6 +1,8 @@
+import { initAutoupdate } from '../util/autoupdate.js';
 import { showErrorBadge } from '../util/badge.js';
+import { reportError } from '../util/errorReporting.js';
 import { getMessages, triggerMessageUpdate } from '../util/messages.js';
-import { getAutoUpdateInterval, getPostponeAction, getPrefix, setPopupMessage } from '../util/storage.js';
+import { getPostponeAction, getPrefix, setPopupMessage } from '../util/storage.js';
 
 (async () => {
     await setPopupMessage(undefined);
@@ -9,22 +11,7 @@ import { getAutoUpdateInterval, getPostponeAction, getPrefix, setPopupMessage } 
         browser.runtime.openOptionsPage();
     });
 
-    try {
-        const periodInMinutes = await getAutoUpdateInterval();
-        browser.alarms.create('check-for-message-updates', { periodInMinutes });
-    } catch (error) {
-        reportError(error);
-    }
-
-    browser.alarms.onAlarm.addListener(async alarm => {
-        try {
-            if (alarm.name === 'check-for-message-updates') {
-                await triggerMessageUpdate();
-            }
-        } catch (error) {
-            reportError(error);
-        }
-    });
+    await initAutoupdate();
     
     browser.runtime.onMessage.addListener(async message => {
         switch (message.id) {
@@ -44,19 +31,6 @@ import { getAutoUpdateInterval, getPostponeAction, getPrefix, setPopupMessage } 
     try {
         await triggerMessageUpdate();
     } catch (error) {
-        reportError(error);
+        await reportError(error);
     }
 })();
-
-async function reportError(error) {
-    console.error(error);
-    try {
-        let errorMessage = `*${ error.message }*`;
-        if (error.stack) {
-            errorMessage += '\n```\n' + error.stack + '\n```';
-        }
-        await showErrorBadge(errorMessage);
-    } catch (err) {
-        console.error('Error while reporting error message:', err);
-    }
-}
