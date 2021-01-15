@@ -86,6 +86,23 @@ function convertMessages(rawMessages) {
 /**
  * Load message definitions from a JSON string
  * @param {string} messageJson The message object in JSON format.
+ * 
+ * @returns {{
+ *      variables: {
+ *          [project: string]: {
+ *              [variable: string]: string;
+ *          };
+ *      };
+ *      messages: {
+ *          [project: string]: {
+ *              [shortcut: string]: {
+ *                  name: string;
+ *                  message: string;
+ *                  messageKey: string;
+ *              };
+ *          };
+ *      };
+ *  }}
  */
 export function loadMessageDefinitions(messageJson) {
     let rawDefinition;

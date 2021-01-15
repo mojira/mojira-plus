@@ -14,7 +14,10 @@
 
             <div class="group browser-style">
                 <input id=sync name=sync type=checkbox>
-                <label for=sync>Synchronize settings across devices (if supported by the browser)</label>
+                <label for=sync>
+                    Synchronize settings across devices
+                    <span class="important syncUnavailableWarning hidden">(not supported by your browser)</span>
+                </label>
             </div>
             
             <div class="group browser-style">
@@ -51,7 +54,7 @@
                 </div>
                 <div class="group browser-style">
                     <button id="check-for-updates" class=browser-style>Check for updates</button>
-                    <small>
+                    <small class="last-update-info hidden">
                         Last checked
                         <span id="last-checked-date">[unknown]</span>
                         / Last updated
@@ -60,16 +63,18 @@
                 </div>
                 <div class="group browser-style">
                     Last cached messages
+                    <span class="important syncWarning hidden">(not synced across devices)</span>
                     <textarea class="browser-style" id="cached-messages" readonly="readonly"></textarea>
                 </div>
             </div>
             <input id=custom name=msgsource type=radio><label for=custom>Use custom messages</label><br>
             <div id=custom-subpanel class="subpanel browser-style">
-                You can use a custom message configuration here. This must be the JSON representation of the <code><a href="https://github.com/mojira/helper-messages/blob/master/assets/messages.yml">messages.yml</a></code> file.
-                <span class="important">However, please note that changing this setting may prevent the extension from working correctly if it is not properly formatted.</span><br><br>
+                <p>You can use a custom message configuration here. This must be the JSON representation of the <code><a href="https://github.com/mojira/helper-messages/blob/master/assets/messages.yml">messages.yml</a></code> file.</p>
+                <p class="important syncWarning hidden">The custom messages are saved per device and won't be synced!</p>
+                <p class=important>Changing this setting may prevent the extension from working correctly if it is not properly formatted!</p>
                 <textarea class=browser-style id=custom-messages></textarea><br>
                 <button class=browser-style id=save-custom-messages>Save custom messages</button><br>
-                <small id="custom-messages-feedback" class="hidden">test</small>
+                <small id="custom-messages-feedback" class="hidden"></small>
             </div>
 
             <div class=spacer></div>
@@ -88,7 +93,10 @@
                     <input class="browser-style textinput" id=commit-url name=commit-url type=text>
                 </div>
                 <div class="group browser-style">
-                    <label for=last-commit>Last commit SHA (default: "none")</label><br>
+                    <label for=last-commit>
+                        Last commit SHA (default: "none")
+                        <span class="important syncWarning hidden">(not synced across devices)</span>
+                    </label><br>
                     <input class="browser-style textinput" id=last-commit name=last-commit type=text>
                 </div>
             </div>
