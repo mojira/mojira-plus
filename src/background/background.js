@@ -1,6 +1,6 @@
-import { showErrorBadge } from './util/badge.js';
-import { getMessages, checkForUpdates } from './util/messages.js';
-import { getAutoUpdateInterval, getPostponeAction, getPrefix, setPopupMessage } from './util/settings.js';
+import { showErrorBadge } from '../util/badge.js';
+import { getMessages, triggerMessageUpdate } from '../util/messages.js';
+import { getAutoUpdateInterval, getPostponeAction, getPrefix, setPopupMessage } from '../util/storage.js';
 
 (async () => {
     await setPopupMessage(undefined);
@@ -12,13 +12,17 @@ import { getAutoUpdateInterval, getPostponeAction, getPrefix, setPopupMessage } 
     try {
         const periodInMinutes = await getAutoUpdateInterval();
         browser.alarms.create('check-for-message-updates', { periodInMinutes });
-    } catch (err) {
-        console.error(err);
+    } catch (error) {
+        reportError(error);
     }
 
     browser.alarms.onAlarm.addListener(async alarm => {
-        if (alarm.name === 'check-for-message-updates') {
-            await checkForUpdates();
+        try {
+            if (alarm.name === 'check-for-message-updates') {
+                await triggerMessageUpdate();
+            }
+        } catch (error) {
+            reportError(error);
         }
     });
     
@@ -38,8 +42,21 @@ import { getAutoUpdateInterval, getPostponeAction, getPrefix, setPopupMessage } 
     });
 
     try {
-        await checkForUpdates();
-    } catch (err) {
-        console.error(err);
+        await triggerMessageUpdate();
+    } catch (error) {
+        reportError(error);
     }
 })();
+
+async function reportError(error) {
+    console.error(error);
+    try {
+        let errorMessage = `*${ error.message }*`;
+        if (error.stack) {
+            errorMessage += '\n```\n' + error.stack + '\n```';
+        }
+        await showErrorBadge(errorMessage);
+    } catch (err) {
+        console.error('Error while reporting error message:', err);
+    }
+}

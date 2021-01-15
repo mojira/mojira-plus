@@ -1,5 +1,5 @@
 import { hideBadge } from '../util/badge.js';
-import { getCommitUpdatesEnabled, getPopupMessage, getLastCommits } from '../util/settings.js';
+import { getCommitUpdatesEnabled, getPopupMessage, getLastCommits } from '../util/storage.js';
 
 document.querySelector('.dismiss-button').addEventListener('click', async () => {
     await hideBadge();

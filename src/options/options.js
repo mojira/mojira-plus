@@ -23,8 +23,8 @@ import {
     setCommitUpdatesEnabled,
     setCommitUrl,
     getLastCommit
-} from '../util/settings.js';
-import { checkForUpdates } from '../util/messages.js';
+} from '../util/storage.js';
+import { triggerMessageUpdate } from '../util/messages.js';
 
 async function init() {
     document.querySelector('#sync').checked = await getSyncAcrossDevices();
@@ -79,7 +79,7 @@ async function init() {
     document.querySelector('#last-checked-date').textContent = (await getLastUpdateCheck()).toLocaleString();
     document.querySelector('#last-updated-date').textContent = (await getLastUpdate()).toLocaleString();
     document.querySelector('#check-for-updates').addEventListener('click', async () => {
-        await checkForUpdates(true);
+        await triggerMessageUpdate(true);
         document.querySelector('#last-checked-date').textContent = (await getLastUpdateCheck()).toLocaleString();
         document.querySelector('#last-updated-date').textContent = (await getLastUpdate()).toLocaleString();
         document.querySelector('#cached-messages').value = await getLastCachedMessages();

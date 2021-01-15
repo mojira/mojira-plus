@@ -1,4 +1,4 @@
-import { setPopupMessage } from './settings.js';
+import { setPopupMessage } from './storage.js';
 
 /**
  * @type {'error' | 'loading' | 'success' | 'none'}

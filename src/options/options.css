@@ -1,0 +1,43 @@
+.panel {
+    padding: 2em;
+}
+
+.subpanel {
+    margin-top: 1em;
+    margin-left: 3em;
+    margin-bottom: 2em;
+}
+
+.group:not(:last-child) {
+    margin-bottom: 1em;
+}
+
+textarea, .textinput {
+    width: 100%;
+}
+
+#cached-messages {
+    margin-top: 0.5em;
+}
+
+textarea {
+    resize: vertical;
+    font-family: monospace;
+    height: 500px;
+}
+
+label {
+    vertical-align: middle;
+}
+
+.hidden {
+    display: none;
+}
+
+.important {
+    color: #aa2222;
+}
+
+.spacer {
+    height: 1em;
+}

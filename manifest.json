@@ -19,7 +19,7 @@
     },
 
     "background": {
-        "page": "src/background.html"
+        "page": "src/background/background.html"
     },
 
     "options_ui": {
@@ -36,12 +36,16 @@
     "content_scripts": [{
         "matches": ["*://bugs.mojang.com/*"],
         "css": [
-            "src/styling.css"
+            "src/content/styling.css"
         ],
         "js": [
             "lib/browser-polyfill.min.js",
-            "src/util/util.js",
-            "src/content.js"
+            "src/content/util.js",
+            "src/content/vars.js",
+            "src/content/insertMessage.js",
+            "src/content/dropdown.js",
+            "src/content/postpone.js",
+            "src/content/content.js"
         ]
     }],
 
