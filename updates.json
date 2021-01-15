@@ -16,6 +16,11 @@
                     "version": "0.3",
                     "update_link": "https://github.com/mojira/message-extension/releases/download/v0.3/mojira-message-extension-0.3.xpi",
                     "update_hash": "sha256:9d0cfddde953fd536b5f7fb8d59c103ab67ce72d3688d1b9c3b09679de049a58"
+                },
+                {
+                    "version": "0.4",
+                    "update_link": "https://github.com/mojira/message-extension/releases/download/v0.4/mojira-message-extension-0.4.xpi",
+                    "update_hash": "sha256:363561ade64467dee395641f64471e982a5b4649c7db96f2f98a9d14539e890c"
                 }
             ]
         }
