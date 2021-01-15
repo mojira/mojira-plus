@@ -11,7 +11,7 @@
   "author": "violine1101",
   "license": "GPL-3.0",
   "devDependencies": {
-    "web-ext": "^5.4.0",
+    "web-ext": "^5.5.0",
     "web-ext-types": "github:kelseasy/web-ext-types"
   },
   "dependencies": {
