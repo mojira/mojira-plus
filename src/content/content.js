@@ -11,7 +11,8 @@ function init() {
                 modifyWikifield(
                     element,
                     element.getAttribute('issue-key').split('-')[0].toLowerCase(),
-                    editorCount++
+                    editorCount++,
+                    document.querySelector('div#opsbar-opsbar-transitions') == null
                 );
             } catch (error) {
                 await sendErrorMessage(error);
