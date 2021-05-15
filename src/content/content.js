@@ -12,7 +12,7 @@ function init() {
                     element,
                     element.getAttribute('issue-key').split('-')[0].toLowerCase(),
                     editorCount++,
-                    document.querySelector('div#opsbar-opsbar-transitions') == null
+                    !isVolunteerUser()
                 );
             } catch (error) {
                 await sendErrorMessage(error);
@@ -38,6 +38,11 @@ function init() {
     });
 
     handlePostponeButton();
+}
+
+function isVolunteerUser() {
+    let opsbar = document.querySelector('div#opsbar-opsbar-transitions');
+    return opsbar && opsbar.children.length > 0;
 }
 
 (async () => {
