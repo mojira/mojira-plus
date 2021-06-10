@@ -53,6 +53,10 @@ You can configure the addon by clicking the Mojira icon in the browser's toolbar
 Issues and pull requests are always very much appreciated. If you want to help developing the extension, here are a few tips:
 
 * Run `npm i` in order to install the needed dependencies. Currently this only includes the type definitions for web extensions.
+* You need to install [`web-ext`](https://github.com/mozilla/web-ext) globally (use `npm i -g web-ext`)
+  * You might encounter warnings when installing it if you use NPM version 7 or newer, but you should be able to ignore them
+  * `web-ext` is not a (dev) dependency of this project because of the large amount of dependencies it has, causing unnecessary maintenance cost.
+  * Update `web-ext` regularily.
 * Run `npm run build` in order to build the current version of the extension and to load the required dependencies into the correct folder.
 * Run `web-ext run` in order to launch a blank instance of Firefox where your addon is running. The addon is reloaded every time a file is changed.
 * You can visit `about:debugging` in that Firefox instance and access the addon's console and dev interface from the "This Firefox" tab.
