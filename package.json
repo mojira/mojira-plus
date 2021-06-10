@@ -4,7 +4,7 @@
   "description": "A browser extension for simplifying the mod & helper workflow on Mojang's bug tracker Mojira",
   "main": "main.js",
   "scripts": {
-    "copylibs": "rm -rf lib && mkdir lib && cp -r node_modules/webextension-polyfill/dist/* ./lib",
+    "copylibs": "(rm -rf lib || rmdir /Q /S lib || echo>NUL) && mkdir lib && (cp -r node_modules/webextension-polyfill/dist/* ./lib || copy node_modules\\webextension-polyfill\\dist\\* .\\lib)",
     "build": "npm run copylibs && web-ext build -o",
     "lint": "npm run copylibs && web-ext lint --self-hosted"
   },
