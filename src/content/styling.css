@@ -12,7 +12,7 @@
 .mojira-helper-messages-button-disabled {
     cursor: not-allowed !important;
 }
-.helper-messages-dropdown {
+.mojira-helper-messages-dropdown {
     max-height: 250px;
     overflow-y: scroll;
 }

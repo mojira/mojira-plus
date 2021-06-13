@@ -56,7 +56,7 @@ function getDropdownList(textArea, project) {
     });
 
     var dropdownList = document.createElement('ul');
-    dropdownList.classList.add('aui-list-truncate', 'helper-messages-dropdown');
+    dropdownList.classList.add('aui-list-truncate', 'mojira-helper-messages-dropdown');
 
     for (item of messageDropdownItems) {
         dropdownList.append(item.element);
