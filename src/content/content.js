@@ -40,11 +40,6 @@ function init() {
     handlePostponeButton();
 }
 
-function isVolunteerUser() {
-    let opsbar = document.querySelector('div#opsbar-opsbar-transitions');
-    return opsbar && opsbar.children.length > 0;
-}
-
 (async () => {
     try {
         const messagesReply = await browser.runtime.sendMessage({id: 'messages-request'});

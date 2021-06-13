@@ -88,6 +88,7 @@ function getMessageButton(editorCount, disabled) {
     );
     if (disabled) {
         messageButton.setAttribute('disabled', true);
+        messageButton.classList.add('mojira-helper-messages-button-disabled');
     }
     messageButton.href = '#';
     messageButton.title = title;
@@ -148,7 +149,7 @@ function modifyWikifield(element, project, editorCount, disabled) {
     element.classList.add('mojira-helper-messages-field');
 
     var textArea = element.querySelector('textarea');
-    textArea.classList.add('mojira-helper-messages-textarea');
+    textArea.classList.add(disabled ? 'mojira-helper-messages-textarea-disabled' : 'mojira-helper-messages-textarea');
     textArea.setAttribute('helper-messages-project', project);
 
     if (!addDropdownToWikifield(element, textArea, project, editorCount, disabled)) {
