@@ -56,7 +56,7 @@ function getDropdownList(textArea, project) {
     });
 
     var dropdownList = document.createElement('ul');
-    dropdownList.classList.add('aui-list-truncate', 'helper-messages-dropdown');
+    dropdownList.classList.add('aui-list-truncate', 'mojira-helper-messages-dropdown');
 
     for (item of messageDropdownItems) {
         dropdownList.append(item.element);
@@ -71,10 +71,11 @@ function getDropdownList(textArea, project) {
  * 
  * @returns {HTMLAnchorElement} The button element
  */
-function getMessageButton(editorCount) {
+function getMessageButton(editorCount, disabled) {
     var messageButtonIcon = document.createElement('span');
     messageButtonIcon.classList.add('aui-icon', 'aui-icon-small', 'aui-iconfont-add-comment');
-    messageButtonIcon.textContent = 'Add Message';
+    const title = disabled ? 'Sorry, you cannot use this here' : 'Add Message';
+    messageButtonIcon.textContent = title;
 
     var messageButton = document.createElement('a');
     messageButton.classList.add(
@@ -85,8 +86,12 @@ function getMessageButton(editorCount) {
         'wiki-edit-messages-trigger',
         'wiki-edit-tooltip'
     );
+    if (disabled) {
+        messageButton.setAttribute('disabled', true);
+        messageButton.classList.add('mojira-helper-messages-button-disabled');
+    }
     messageButton.href = '#';
-    messageButton.title = 'Add Message';
+    messageButton.title = title;
     messageButton.tabIndex = -1;
     messageButton.setAttribute('aria-controls', `wiki-edit-dropdown2-messages-wikiEdit${editorCount}`);
     messageButton.setAttribute('aria-expanded', false);
@@ -107,21 +112,23 @@ function getMessageButton(editorCount) {
  * 
  * @returns {boolean} Whether the dropdown could be successfully added
  */
-function addDropdownToWikifield(element, textArea, project, editorCount) {
+function addDropdownToWikifield(element, textArea, project, editorCount, disabled) {
     if (element.querySelector('.wiki-edit-toolbar') === null || element.querySelector('.wiki-edit-toolbar-last') === null) {
         return false;
     }
 
-    var dropdownList = getDropdownList(textArea, project);
+    if (!disabled) {
+        var dropdownList = getDropdownList(textArea, project);
 
-    var dropdownElement = document.createElement('div');
-    dropdownElement.classList.add('aui-dropdown2', 'aui-style-default', 'wiki-edit-dropdown');
-    dropdownElement.id = `wiki-edit-dropdown2-messages-wikiEdit${editorCount}`;
-    dropdownElement.append(dropdownList);
+        var dropdownElement = document.createElement('div');
+        dropdownElement.classList.add('aui-dropdown2', 'aui-style-default', 'wiki-edit-dropdown');
+        dropdownElement.id = `wiki-edit-dropdown2-messages-wikiEdit${editorCount}`;
+        dropdownElement.append(dropdownList);
+    
+        element.querySelector('.wiki-edit-toolbar').before(dropdownElement);
+    }
 
-    element.querySelector('.wiki-edit-toolbar').before(dropdownElement);
-
-    var messageButton = getMessageButton(editorCount);
+    var messageButton = getMessageButton(editorCount, disabled);
 
     var messageButtonGroup = document.createElement('div');
     messageButtonGroup.classList.add('aui-buttons');
@@ -138,19 +145,19 @@ function addDropdownToWikifield(element, textArea, project, editorCount) {
  * @param {string} project The project the current ticket is in
  * @param {number} editorCount A unique identifier for this wikifield
  */
-function modifyWikifield(element, project, editorCount) {
+function modifyWikifield(element, project, editorCount, disabled) {
     element.classList.add('mojira-helper-messages-field');
 
     var textArea = element.querySelector('textarea');
-    textArea.classList.add('mojira-helper-messages-textarea');
+    textArea.classList.add(disabled ? 'mojira-helper-messages-textarea-disabled' : 'mojira-helper-messages-textarea');
     textArea.setAttribute('helper-messages-project', project);
 
-    if (!addDropdownToWikifield(element, textArea, project, editorCount)) {
+    if (!addDropdownToWikifield(element, textArea, project, editorCount, disabled)) {
         textArea.classList.add('mojira-helper-messages-textarea-shortcut-only');
         
         setTimeout(() => {
             try {
-                if (addDropdownToWikifield(element, textArea, project, editorCount)) {
+                if (addDropdownToWikifield(element, textArea, project, editorCount, disabled)) {
                     textArea.classList.remove('mojira-helper-messages-textarea-shortcut-only');
                 }
             } catch (error) {

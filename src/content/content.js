@@ -11,7 +11,8 @@ function init() {
                 modifyWikifield(
                     element,
                     element.getAttribute('issue-key').split('-')[0].toLowerCase(),
-                    editorCount++
+                    editorCount++,
+                    !isVolunteerUser()
                 );
             } catch (error) {
                 await sendErrorMessage(error);
