@@ -89,7 +89,7 @@ export async function setPostponeAction(postponeAction) {
 }
 
 /**
- * @returns {number}
+ * @returns {Promise<number>}
  */
 export async function getCustomSortIndex() {
     return await getFromStorage('customSortIndex', 0);

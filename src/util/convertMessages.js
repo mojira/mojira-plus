@@ -51,6 +51,8 @@ function convertVariables(rawVariables) {
  * @returns {{
  *     [shortcut: string]: {
  *         name: string;
+ *         category?: string;
+ *         shortcut: string;
  *         message: string;
  *         messageKey: string;
  *     };
@@ -65,6 +67,8 @@ function convertMessages(rawMessages) {
                 if (!messages[msgVariant.project]) messages[msgVariant.project] = {};
                 messages[msgVariant.project][msgVariant.shortcut] = {
                     name: msgVariant.name,
+                    category: msgVariant.category,
+                    shortcut: msgVariant.shortcut,
                     message: msgVariant.message,
                     messageKey: messageKey
                 };
@@ -73,6 +77,8 @@ function convertMessages(rawMessages) {
                     if (!messages[project]) messages[project] = {};
                     messages[project][msgVariant.shortcut] = {
                         name: msgVariant.name,
+                        category: msgVariant.category,
+                        shortcut: msgVariant.shortcut,
                         message: msgVariant.message,
                         messageKey: messageKey
                     };
@@ -88,6 +94,10 @@ function convertMessages(rawMessages) {
  * @param {string} messageJson The message object in JSON format.
  * 
  * @returns {{
+ *      categories: [{
+ *          category: string;
+ *          name: string;
+ *      }];
  *      variables: {
  *          [project: string]: {
  *              [variable: string]: string;
@@ -97,6 +107,8 @@ function convertMessages(rawMessages) {
  *          [project: string]: {
  *              [shortcut: string]: {
  *                  name: string;
+ *                  category?: string;
+ *                  shortcut: string;
  *                  message: string;
  *                  messageKey: string;
  *              };
@@ -118,6 +130,7 @@ export function loadMessageDefinitions(messageJson) {
     }
 
     return {
+        categories: rawDefinition.categories,
         variables: convertVariables(rawDefinition.variables),
         messages: convertMessages(rawDefinition.messages)
     };

@@ -51,6 +51,7 @@ function init() {
 (async () => {
     try {
         const messagesReply = await browser.runtime.sendMessage({ id: 'messages-request' });
+        categories = messagesReply.categories;
         variables = messagesReply.variables;
         messages = messagesReply.messages;
 
