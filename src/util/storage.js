@@ -42,7 +42,7 @@ async function saveToStorage(obj, local = false) {
     try {
         const storage = await getStorage(local);
         await storage.set(obj)
-    } catch (err){ 
+    } catch (err) {
         console.error(err);
     }
 }
@@ -60,7 +60,7 @@ export async function getSyncAcrossDevices() {
  */
 export async function setSyncAcrossDevices(syncAcrossDevices) {
     storage = undefined;
-    await saveToStorage({syncAcrossDevices}, true);
+    await saveToStorage({ syncAcrossDevices }, true);
 }
 
 export async function getPrefix() {
@@ -71,7 +71,7 @@ export async function getPrefix() {
  * @param {string} prefix The prefix for replacements
  */
 export async function setPrefix(prefix) {
-    await saveToStorage({prefix});
+    await saveToStorage({ prefix });
 }
 
 /**
@@ -85,7 +85,7 @@ export async function getPostponeAction() {
  * @param {Promise<'hide' | 'warn' | 'none'>} postponeAction How to handle the postpone button
  */
 export async function setPostponeAction(postponeAction) {
-    await saveToStorage({postponeAction});
+    await saveToStorage({ postponeAction });
 }
 
 /**
@@ -113,7 +113,7 @@ export async function getMessageSource() {
  * @param {'remote' | 'custom'} messageSource Where the helper messages come from
  */
 export async function setMessageSource(messageSource) {
-    await saveToStorage({messageSource: messageSource});
+    await saveToStorage({ messageSource: messageSource });
 }
 
 export async function getUrl() {
@@ -124,7 +124,7 @@ export async function getUrl() {
  * @param {string} url The helper messages url that should be used for keeping the messages up-to-date
  */
 export async function setUrl(url) {
-    await saveToStorage({url});
+    await saveToStorage({ url });
 }
 
 export async function getAutoUpdate() {
@@ -135,14 +135,14 @@ export async function getAutoUpdate() {
  * @param {boolean} autoUpdate Whether the messages should be updated automatically
  */
 export async function setAutoUpdate(autoUpdate) {
-    await saveToStorage({autoUpdate});
+    await saveToStorage({ autoUpdate });
 }
 
 /**
  * @param {number} autoUpdateInterval How many minutes should be between checks for new messages
  */
 export async function setAutoUpdateInterval(autoUpdateInterval) {
-    await saveToStorage({autoUpdateInterval});
+    await saveToStorage({ autoUpdateInterval });
 }
 
 export async function getAutoUpdateInterval() {
@@ -153,7 +153,7 @@ export async function getAutoUpdateInterval() {
  * Set the last update check to now
  */
 export async function setLastUpdateCheck() {
-    await saveToStorage({lastUpdateCheck: new Date().toUTCString()}, true);
+    await saveToStorage({ lastUpdateCheck: new Date().toUTCString() }, true);
 }
 
 export async function getLastUpdateCheck() {
@@ -164,7 +164,7 @@ export async function getLastUpdateCheck() {
  * @param {string} lastCachedMessages The last cached messages
  */
 export async function setLastCachedMessages(lastCachedMessages) {
-    await saveToStorage({lastCachedMessages}, true);
+    await saveToStorage({ lastCachedMessages }, true);
 }
 
 export async function getLastCachedMessages() {
@@ -175,7 +175,7 @@ export async function getLastCachedMessages() {
  * Set the last update to now
  */
 export async function setLastUpdate() {
-    await saveToStorage({lastUpdate: new Date().toUTCString()}, true);
+    await saveToStorage({ lastUpdate: new Date().toUTCString() }, true);
 }
 
 export async function getLastUpdate() {
@@ -186,7 +186,7 @@ export async function getLastUpdate() {
  * @param {string} customMessages The JSON representation of the custom message file
  */
 export async function setCustomMessages(customMessages) {
-    await saveToStorage({customMessages}, true);
+    await saveToStorage({ customMessages }, true);
 }
 
 export async function getCustomMessages() {
@@ -197,7 +197,7 @@ export async function getCustomMessages() {
  * @param {boolean} commitUpdatesEnabled Whether commit updates should be enabled
  */
 export async function setCommitUpdatesEnabled(commitUpdatesEnabled) {
-    await saveToStorage({commitUpdatesEnabled});
+    await saveToStorage({ commitUpdatesEnabled });
 }
 
 export async function getCommitUpdatesEnabled() {
@@ -208,7 +208,7 @@ export async function getCommitUpdatesEnabled() {
  * @param {string} commitUrl The url to the commits JSON file
  */
 export async function setCommitUrl(commitUrl) {
-    await saveToStorage({commitUrl});
+    await saveToStorage({ commitUrl });
 }
 
 export async function getCommitUrl() {
@@ -219,7 +219,7 @@ export async function getCommitUrl() {
  * @param {string} commit The sha of the last commit
  */
 export async function setLastCommit(lastCommit) {
-    await saveToStorage({lastCommit}, true);
+    await saveToStorage({ lastCommit }, true);
 }
 
 export async function getLastCommit() {
@@ -234,7 +234,7 @@ Storage objects used for internal extension communication
  * @param {string} popupMessage The current popup message
  */
 export async function setPopupMessage(popupMessage) {
-    await saveToStorage({popupMessage}, true);
+    await saveToStorage({ popupMessage }, true);
 }
 
 export async function getPopupMessage() {
@@ -249,7 +249,7 @@ export async function getPopupMessage() {
  * @param {string} lastCommits The JSON representation of the last commits
  */
 export async function setLastCommits(lastCommits) {
-    await saveToStorage({lastCommits}, true);
+    await saveToStorage({ lastCommits }, true);
 }
 
 export async function getLastCommits() {

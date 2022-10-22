@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <base target="_blank"/>
-        <meta charset="utf-8"/>
-        <script type="module" src="/lib/browser-polyfill.min.js"></script>
-        <script type="module" src="./popup.js"></script>
-        <link rel="stylesheet" type="text/css" href="./popup.css"/>
-    </head>
-    <body>
-        <div class="panel browser-style">
-            <div id="popupMessage">
-                <b>Error: Popup message was not changed from default.</b><br>
-                Internal extension communication is not possible! Try disabling the extension and enabling it again.<br>
-                If the issue persists, try restarting your browser.
-            </div>
-            <button class="browser-style dismiss-button">Dismiss</button>
+
+<head>
+    <base target="_blank" />
+    <meta charset="utf-8" />
+    <script type="module" src="/lib/browser-polyfill.min.js"></script>
+    <script type="module" src="./popup.js"></script>
+    <link rel="stylesheet" type="text/css" href="./popup.css" />
+</head>
+
+<body>
+    <div class="panel browser-style">
+        <div id="popupMessage">
+            <b>Error: Popup message was not changed from default.</b><br>
+            Internal extension communication is not possible! Try disabling the extension and enabling it again.<br>
+            If the issue persists, try restarting your browser.
         </div>
-    </body>
+        <button class="browser-style dismiss-button">Dismiss</button>
+    </div>
+</body>
+
 </html>

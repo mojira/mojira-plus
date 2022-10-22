@@ -89,7 +89,7 @@ async function getCommits() {
         return list;
     } catch (error) {
         const block = document.createElement('pre');
-        block.textContent = `Error while retrieving latest commits:\n${ error.message }`;
+        block.textContent = `Error while retrieving latest commits:\n${error.message}`;
         return block;
     }
 }

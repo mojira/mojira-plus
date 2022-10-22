@@ -29,7 +29,7 @@ async function processMessageUpdate(response) {
             + 'You may need to reload open tabs in order for the change to take effect.';
 
         const previousCommit = await getLastCommit();
-        
+
         await updateChangelog();
 
         const lastCommit = await getLastCommit();
@@ -93,7 +93,7 @@ export async function triggerMessageUpdate(force = false, silent = false) {
         const autoUpdateInterval = await getAutoUpdateInterval();
         const lastUpdateCheck = await getLastUpdateCheck();
 
-        if (force || new Date() - lastUpdateCheck >= autoUpdateInterval * 1000 * 60 ) {
+        if (force || new Date() - lastUpdateCheck >= autoUpdateInterval * 1000 * 60) {
             return await checkForMessageUpdates(silent);
         }
     }

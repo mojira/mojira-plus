@@ -12,7 +12,8 @@
     margin-bottom: 1em;
 }
 
-textarea, .textinput {
+textarea,
+.textinput {
     width: 100%;
 }
 

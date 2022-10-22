@@ -2,16 +2,20 @@
     border: 1px solid #2ecc72 !important;
     border-radius: 0 !important;
 }
+
 .mojira-helper-messages-textarea-disabled {
     border: 1px solid #cc2e2e !important;
     border-radius: 0 !important;
 }
+
 .mojira-helper-messages-textarea-shortcut-only {
     border: 1px solid #cc722e !important;
 }
+
 .mojira-helper-messages-button-disabled {
     cursor: not-allowed !important;
 }
+
 .mojira-helper-messages-dropdown {
     max-height: 250px;
     overflow-y: scroll;

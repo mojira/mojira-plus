@@ -10,14 +10,14 @@ let currentBadge = 'none';
  * @param {string} message The message that should be shown on the popup
  */
 export async function showSuccessBadge(message) {
-    browser.browserAction.setPopup({popup: '/src/popup/popup.html'});
+    browser.browserAction.setPopup({ popup: '/src/popup/popup.html' });
     await setPopupMessage(message);
 
-    browser.browserAction.setBadgeBackgroundColor({color: '#222288'});
+    browser.browserAction.setBadgeBackgroundColor({ color: '#222288' });
     if (browser.browserAction.setBadgeTextColor) {
-        browser.browserAction.setBadgeTextColor({color: '#ffffff'});
+        browser.browserAction.setBadgeTextColor({ color: '#ffffff' });
     }
-    browser.browserAction.setBadgeText({text: 'i'});
+    browser.browserAction.setBadgeText({ text: 'i' });
 
     currentBadge = 'success';
 }
@@ -28,11 +28,11 @@ export async function showSuccessBadge(message) {
 export async function showLoadingBadge() {
     if (currentBadge === 'error') return;
 
-    browser.browserAction.setBadgeBackgroundColor({color: '#228822'});
+    browser.browserAction.setBadgeBackgroundColor({ color: '#228822' });
     if (browser.browserAction.setBadgeTextColor) {
-        browser.browserAction.setBadgeTextColor({color: '#ffffff'});
+        browser.browserAction.setBadgeTextColor({ color: '#ffffff' });
     }
-    browser.browserAction.setBadgeText({text: '?'});
+    browser.browserAction.setBadgeText({ text: '?' });
 
     currentBadge = 'loading';
 }
@@ -42,14 +42,14 @@ export async function showLoadingBadge() {
  * @param {string} message The message that should be shown on the popup
  */
 export async function showErrorBadge(message) {
-    browser.browserAction.setPopup({popup: '/src/popup/popup.html'});
+    browser.browserAction.setPopup({ popup: '/src/popup/popup.html' });
     await setPopupMessage(message);
 
-    browser.browserAction.setBadgeBackgroundColor({color: '#882222'});
+    browser.browserAction.setBadgeBackgroundColor({ color: '#882222' });
     if (browser.browserAction.setBadgeTextColor) {
-        browser.browserAction.setBadgeTextColor({color: '#ffffff'});
+        browser.browserAction.setBadgeTextColor({ color: '#ffffff' });
     }
-    browser.browserAction.setBadgeText({text: '!'});
+    browser.browserAction.setBadgeText({ text: '!' });
 
     currentBadge = 'error';
 }
@@ -59,9 +59,9 @@ export async function hideBadge(delay = false) {
         await new Promise(resolve => setTimeout(resolve, 1000));
     }
 
-    browser.browserAction.setPopup({popup: ''});
-    
-    browser.browserAction.setBadgeText({text: ''});
+    browser.browserAction.setPopup({ popup: '' });
+
+    browser.browserAction.setBadgeText({ text: '' });
 
     currentBadge = 'none';
 }

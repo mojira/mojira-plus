@@ -46,7 +46,7 @@ async function init() {
     document.querySelectorAll('.syncWarning').forEach(elem => elem.classList.toggle('hidden', !syncAcrossDevices));
 
     document.querySelector('#prefix').value = await getPrefix();
-    document.querySelector('#prefix').addEventListener('change', async event => {        
+    document.querySelector('#prefix').addEventListener('change', async event => {
         await setPrefix(event.target.value);
     });
 
@@ -54,35 +54,35 @@ async function init() {
     document.querySelector('#postponeHide').addEventListener('click', async () => {
         await setPostponeAction('hide');
     });
-    
+
     document.querySelector('#postponeWarn').checked = await getPostponeAction() === 'warn';
     document.querySelector('#postponeWarn').addEventListener('click', async () => {
         await setPostponeAction('warn');
     });
-    
+
     document.querySelector('#postponeNone').checked = await getPostponeAction() === 'none';
     document.querySelector('#postponeNone').addEventListener('click', async () => {
         await setPostponeAction('none');
     });
 
-    document.querySelector(`#${ await getMessageSource() }`).checked = true;
+    document.querySelector(`#${await getMessageSource()}`).checked = true;
     document.querySelector('#remote').addEventListener('click', async () => {
         await setMessageSource('remote');
     });
     document.querySelector('#custom').addEventListener('click', async () => {
         await setMessageSource('custom');
     });
-    
+
     document.querySelector('#url').value = await getUrl();
-    document.querySelector('#url').addEventListener('change', async event => {        
+    document.querySelector('#url').addEventListener('change', async event => {
         await setUrl(event.target.value);
     });
-    
+
     document.querySelector('#auto-update').checked = await getAutoUpdate();
     document.querySelector('#auto-update').addEventListener('change', async event => {
         await setAutoUpdate(event.target.checked);
     });
-    
+
     document.querySelector('#auto-update-interval').value = await getAutoUpdateInterval();
     document.querySelector('#auto-update-interval').addEventListener('change', async event => {
         await setAutoUpdateInterval(event.target.value);

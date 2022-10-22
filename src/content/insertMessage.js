@@ -117,7 +117,7 @@ async function replaceText(textArea, project) {
 
         if (pos >= 0) {
             replacement = await getExpandedMessage(shortcut, project);
-            
+
             if (replacement === undefined)
                 return;
 
@@ -164,9 +164,9 @@ async function insertText(textArea, shortcut, project) {
 
     if (replacement === undefined)
         return;
-    
+
     var insertedText = replacement.insertedText;
-    
+
     text = text.substr(0, cursorPos) + insertedText + text.substr(cursorPosEnd);
 
     textArea.value = text;

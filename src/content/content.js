@@ -33,7 +33,7 @@ function init() {
             sendErrorMessage(error);
         }
     }, 1000);
-    
+
     document.addEventListener('keyup', async event => {
         var element = event.target;
         try {
@@ -50,13 +50,13 @@ function init() {
 
 (async () => {
     try {
-        const messagesReply = await browser.runtime.sendMessage({id: 'messages-request'});
+        const messagesReply = await browser.runtime.sendMessage({ id: 'messages-request' });
         variables = messagesReply.variables;
         messages = messagesReply.messages;
 
-        prefix = await browser.runtime.sendMessage({id: 'prefix-request'});
+        prefix = await browser.runtime.sendMessage({ id: 'prefix-request' });
 
-        postponeAction = await browser.runtime.sendMessage({id: 'postponeaction-request'});
+        postponeAction = await browser.runtime.sendMessage({ id: 'postponeaction-request' });
 
         customSortIndex = await browser.runtime.sendMessage({ id: 'custom-sort-index-request' });
 

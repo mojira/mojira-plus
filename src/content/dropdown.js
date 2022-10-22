@@ -124,7 +124,7 @@ function addDropdownToWikifield(element, textArea, project, editorCount, disable
         dropdownElement.classList.add('aui-dropdown2', 'aui-style-default', 'wiki-edit-dropdown');
         dropdownElement.id = `wiki-edit-dropdown2-messages-wikiEdit${editorCount}`;
         dropdownElement.append(dropdownList);
-    
+
         element.querySelector('.wiki-edit-toolbar').before(dropdownElement);
     }
 
@@ -154,7 +154,7 @@ function modifyWikifield(element, project, editorCount, disabled) {
 
     if (!addDropdownToWikifield(element, textArea, project, editorCount, disabled)) {
         textArea.classList.add('mojira-helper-messages-textarea-shortcut-only');
-        
+
         setTimeout(() => {
             try {
                 if (addDropdownToWikifield(element, textArea, project, editorCount, disabled)) {
