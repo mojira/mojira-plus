@@ -39,3 +39,10 @@
     display: flex;
     align-items: center;
 }
+
+#announcement-banner {
+    position: absolute;
+    height: 0;
+    top: -100%;
+    left: -100%;
+}
