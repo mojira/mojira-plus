@@ -45,6 +45,7 @@
             "src/content/insertMessage.js",
             "src/content/dropdown.js",
             "src/content/postpone.js",
+            "src/content/sorting.js",
             "src/content/content.js"
         ]
     }],

@@ -89,6 +89,20 @@ export async function setPostponeAction(postponeAction) {
 }
 
 /**
+ * @returns {number}
+ */
+export async function getCustomSortIndex() {
+    return await getFromStorage('customSortIndex', 0);
+}
+
+/**
+ * @param {number} customSortIndex
+ */
+export async function setCustomSortIndex(customSortIndex) {
+    await saveToStorage({ customSortIndex });
+}
+
+/**
  * @returns {Promise<'remote' | 'custom'>} Where the helper messages come from
  */
 export async function getMessageSource() {

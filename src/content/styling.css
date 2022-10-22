@@ -16,3 +16,22 @@
     max-height: 250px;
     overflow-y: scroll;
 }
+
+#activitymodule .mod-content.mojira-ext-reverse .issuePanelContainer {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+#activitymodule .mod-content.mojira-ext-reverse .message-container button {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+#activitymodule #sort-button {
+    display: none !important;
+}
+
+#activitymodule #custom-sort-button {
+    display: flex;
+    align-items: center;
+}

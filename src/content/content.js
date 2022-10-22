@@ -19,6 +19,14 @@ function init() {
             }
         });
 
+        document.querySelectorAll('#activitymodule .mod-content').forEach(async element => {
+            try {
+                modifyActivityModule(element);
+            } catch (error) {
+                await sendErrorMessage(error);
+            }
+        });
+
         try {
             handlePostponeButton();
         } catch (error) {
@@ -49,6 +57,8 @@ function init() {
         prefix = await browser.runtime.sendMessage({id: 'prefix-request'});
 
         postponeAction = await browser.runtime.sendMessage({id: 'postponeaction-request'});
+
+        customSortIndex = await browser.runtime.sendMessage({ id: 'custom-sort-index-request' });
 
         init();
     } catch (error) {
