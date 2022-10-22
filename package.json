@@ -14,6 +14,6 @@
     "web-ext-types": "github:kelseasy/web-ext-types"
   },
   "dependencies": {
-    "webextension-polyfill": "^0.8.0"
+    "webextension-polyfill": "^0.10.0"
   }
 }
