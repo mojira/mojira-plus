@@ -54,3 +54,6 @@ let postponeAction = 'none';
 
 /** @type {number} */
 let customSortIndex = 0;
+
+/** @type {boolean} */
+let userIsVolunteer = false;

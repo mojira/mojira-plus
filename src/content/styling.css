@@ -3,11 +3,6 @@
     border-radius: 0 !important;
 }
 
-.mojira-helper-messages-textarea-disabled {
-    border: 1px solid #cc2e2e !important;
-    border-radius: 0 !important;
-}
-
 .mojira-helper-messages-textarea-shortcut-only {
     border: 1px solid #cc722e !important;
 }

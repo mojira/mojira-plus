@@ -4,6 +4,17 @@ import { reportError } from '../util/errorReporting.js';
 import { getMessages, triggerMessageUpdate } from '../util/messages.js';
 import { getCustomSortIndex, getPostponeAction, getPrefix, setCustomSortIndex, setPopupMessage } from '../util/storage.js';
 
+/**
+ * @type {{
+ *      user?: string;
+ *      value: boolean;
+ * }}
+ */
+let permissionCache = {
+    user: undefined,
+    value: false,
+};
+
 (async () => {
     await setPopupMessage(undefined);
 
@@ -25,6 +36,14 @@ import { getCustomSortIndex, getPostponeAction, getPrefix, setCustomSortIndex, s
                 return await getCustomSortIndex();
             case 'set-custom-sort-index':
                 await setCustomSortIndex(message.index);
+                return;
+            case 'get-permission-cache':
+                return permissionCache;
+            case 'set-permission-cache':
+                permissionCache = {
+                    user: message.user,
+                    value: message.value
+                };
                 return;
             case 'show-error':
                 console.error(`Received error message: ${message.errorMessage}`);

@@ -14,12 +14,3 @@ async function sendErrorMessage(error) {
         console.error('Error while reporting error message:', err);
     }
 }
-
-/**
- * Checks if the currently logged in user is a volunteer user (moderator / helper), only works on issue pages
- * @returns {Boolean} true if the logged in user is a helper+, false otherwise
- */
-function isVolunteerUser() {
-    let opsbar = document.querySelector('div#opsbar-opsbar-transitions');
-    return opsbar && opsbar.children.length > 0;
-}

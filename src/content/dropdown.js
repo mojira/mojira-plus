@@ -176,6 +176,7 @@ function getMessageButton(editorCount, disabled) {
  * @param {HTMLTextAreaElement} textArea The text area that this dropdown is for
  * @param {string} project The project the current ticket is in
  * @param {number} editorCount A unique identifier for this wikifield
+ * @param {disabled} disabled Whether the dropdown button is disabled
  * 
  * @returns {boolean} Whether the dropdown could be successfully added
  */
@@ -206,7 +207,9 @@ function addDropdownToWikifield(element, textArea, project, editorCount, disable
  * @param {string} project The project the current ticket is in
  * @param {number} editorCount A unique identifier for this wikifield
  */
-function modifyWikifield(element, project, editorCount, disabled) {
+function modifyWikifield(element, project, editorCount) {
+    const disabled = !userIsVolunteer;
+
     element.classList.add('mojira-helper-messages-field');
 
     var textArea = element.querySelector('textarea');

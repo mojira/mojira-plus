@@ -11,8 +11,7 @@ function init() {
                 modifyWikifield(
                     element,
                     element.getAttribute('issue-key').split('-')[0].toLowerCase(),
-                    editorCount++,
-                    !isVolunteerUser()
+                    editorCount++
                 );
             } catch (error) {
                 await sendErrorMessage(error);
@@ -49,6 +48,12 @@ function init() {
 }
 
 (async () => {
+    try {
+        userIsVolunteer = await queryPermissions();
+    } catch (error) {
+        await sendErrorMessage(error);
+    }
+
     try {
         const messagesReply = await browser.runtime.sendMessage({ id: 'messages-request' });
         categories = messagesReply.categories;
