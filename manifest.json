@@ -1,14 +1,14 @@
 {
     "manifest_version": 2,
-    "name": "Mojira Message Extension",
-    "version": "0.4",
+    "name": "Mojira Plus",
+    "version": "0.5",
     
-    "description": "Easily access helper messages directly on Mojira by using shortcuts. Please note that the helper messages may only be used by Mojira helpers, Mojira moderators, and Mojang staff.",
+    "description": "Enables various additional features on Mojang's bug tracker Mojira for helpers, moderators, and other Mojira power users. Please note that the helper messages included in this extension may only be used by Mojira helpers, moderators, and Mojang staff.",
     
     "browser_specific_settings": {
         "gecko": {
-            "id": "message-extension@mojira.github.io",
-            "update_url": "https://raw.githubusercontent.com/mojira/message-extension/releases/updates.json",
+            "id": "mojira-plus@mojira.github.io",
+            "update_url": "https://raw.githubusercontent.com/mojira/mojira-plus/releases/updates.json",
             "strict_min_version": "68.0"
         }
     },      
@@ -29,7 +29,7 @@
 
     "browser_action": {
         "default_icon": "icons/mojira-logo-32.png",
-        "default_title": "Mojira Helper Messages",
+        "default_title": "Mojira Plus",
         "browser_style": true
     },
 

@@ -1,7 +1,7 @@
 {
-  "name": "mojira-message-extension",
-  "version": "0.1.0",
-  "description": "A browser extension for simplifying the mod & helper workflow on Mojang's bug tracker Mojira",
+  "name": "mojira-plus",
+  "version": "0.5.0",
+  "description": "A browser extension enabling various additional features on Mojang's bug tracker Mojira for helpers, moderators, and other Mojira power users",
   "main": "main.js",
   "scripts": {
     "copylibs": "(rm -rf lib || rmdir /Q /S lib || echo>NUL) && mkdir lib && (cp -r node_modules/webextension-polyfill/dist/* ./lib || copy node_modules\\webextension-polyfill\\dist\\* .\\lib)",

@@ -1,26 +1,40 @@
-[![](https://img.shields.io/github/issues/mojira/message-extension)](https://github.com/mojira/message-extension/issues)
-[![](https://img.shields.io/github/stars/mojira/message-extension)](https://github.com/mojira/message-extension/stargazers)
-[![](https://img.shields.io/github/license/mojira/message-extension)](https://github.com/mojira/message-extension/blob/master/LICENSE.md)
+[![](https://img.shields.io/github/issues/mojira/mojira-plus)](https://github.com/mojira/mojira-plus/issues)
+[![](https://img.shields.io/github/stars/mojira/mojira-plus)](https://github.com/mojira/mojira-plus/stargazers)
+[![](https://img.shields.io/github/license/mojira/mojira-plus)](https://github.com/mojira/mojira-plus/blob/master/LICENSE.md)
 
-# Mojira Helper Message Browser Extension
-This is a browser extension made for simplifying the mod and helper workflow on Mojira. It integrates the helper messages from the [`helper-messages`](https://github.com/mojira/helper-messages) repository directly into the Mojira interface, so that messages can be pasted very easily without the need of visiting another website.
-
-On top of that, it always keeps the messages up-to-date with the latest version from the `helper-messages` repository.
+# Mojira Plus Browser Extension
+This is a browser extension enabling various additional features on Mojang's bug tracker Mojira for helpers, moderators, and other Mojira power users.
 
 This extension has primarily been created for and tested in Mozilla Firefox. However, it should also work in Chromium-based browsers, such as Google Chrome, Opera, and modern versions of Microsoft Edge.
 
-⚠ Please note that the helper messages may only be used on the bug tracker by helpers, moderators or Mojang staff. Do not use them yourself if you do not belong to one of these groups as it may confuse users regarding your role.
+## Helper messages
+
+**⚠ Please note that the helper messages included in this extension may only be used on the bug tracker by helpers, moderators or Mojang staff. Do not use them yourself if you do not belong to one of these groups, as it may confuse users regarding your role.**
+
+This extension simplifies the mod and helper workflow on Mojira. It integrates the helper messages from the [`helper-messages`](https://github.com/mojira/helper-messages) repository directly into the Mojira interface, so that messages can be pasted very easily without the need of visiting another website.
+
+On top of that, it always keeps the messages up-to-date with the latest version from the `helper-messages` repository.
+
+More information about how to use this feature of the extension can be found below.
+
+## Custom activity module sorting
+
+This extension adds two additional sort modes to the activity section on bug reports: "Newest last" and "Oldest last". They are the same as "Oldest first" and "Newest first", respectively, but instead of omitting items at the bottom of the list when there are too many, they omit items at the top of the list. This restores the behaviour from previous versions of Jira.
+
+## Postpone button
+
+The postpone button is only seldomly used, and instead usually is clicked by mistake. This extension provides an option to either hide it completely or show a warning before the issue is actually postponed.
 
 ## Installation
 ### Firefox
-1. Select the latest version of the extension on the [releases](https://github.com/mojira/message-extension/releases) page.
+1. Select the latest version of the extension on the [releases](https://github.com/mojira/mojira-plus/releases) page.
 2. Click on the `.xpi` file
 3. Follow the instructions on the popups that show up in order to install the extension
 
 You now have installed the extension successfully. If this is enabled in the browser settings, it will be automatically updated whenever there's a new version of it available.
 
 ### Google Chrome and other Chromium-based browsers
-1. Select the latest version of the extension on the [releases](https://github.com/mojira/message-extension/releases) page.
+1. Select the latest version of the extension on the [releases](https://github.com/mojira/mojira-plus/releases) page.
 2. Download the `.zip` file
 3. Extract the `.zip` file into a folder and place it somewhere on your system
 4. Open `chrome://extensions`
