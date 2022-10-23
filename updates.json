@@ -4,23 +4,37 @@
             "updates": [
                 {
                     "version": "0.1",
-                    "update_link": "https://github.com/mojira/message-extension/releases/download/v0.1/mojira-message-extension-0.1.xpi",
+                    "update_link": "https://github.com/mojira/mojira-plus/releases/download/v0.1/mojira-message-extension-0.1.xpi",
                     "update_hash": "sha256:de9eadd7a073f5cfe3438ca43663acd65174eceaa4ceb7561c9c916c1bd6a857"
                 },
                 {
                     "version": "0.2",
-                    "update_link": "https://github.com/mojira/message-extension/releases/download/v0.2/mojira-message-extension-0.2.xpi",
+                    "update_link": "https://github.com/mojira/mojira-plus/releases/download/v0.2/mojira-message-extension-0.2.xpi",
                     "update_hash": "sha256:e5c0705173dd784bdcd36613f466a021f87ae3da6d9d4936a167bace3c1e6a4e"
                 },
                 {
                     "version": "0.3",
-                    "update_link": "https://github.com/mojira/message-extension/releases/download/v0.3/mojira-message-extension-0.3.xpi",
+                    "update_link": "https://github.com/mojira/mojira-plus/releases/download/v0.3/mojira-message-extension-0.3.xpi",
                     "update_hash": "sha256:9d0cfddde953fd536b5f7fb8d59c103ab67ce72d3688d1b9c3b09679de049a58"
                 },
                 {
                     "version": "0.4",
-                    "update_link": "https://github.com/mojira/message-extension/releases/download/v0.4/mojira-message-extension-0.4.xpi",
+                    "update_link": "https://github.com/mojira/mojira-plus/releases/download/v0.4/mojira-message-extension-0.4.xpi",
                     "update_hash": "sha256:363561ade64467dee395641f64471e982a5b4649c7db96f2f98a9d14539e890c"
+                },
+                {
+                    "version": "0.5",
+                    "update_link": "https://github.com/mojira/mojira-plus/releases/download/v0.5/mojira-plus-0.5.xpi",
+                    "update_hash": "sha256:cd9ce547e5a364801a56410fdf12ac530153882f8ce67aed600a7b1558e119d7"
+                }
+            ]
+        },
+        "mojira-plus@mojira.github.io": {
+            "updates": [
+                {
+                    "version": "0.5",
+                    "update_link": "https://github.com/mojira/mojira-plus/releases/download/v0.5/mojira-plus-0.5.xpi",
+                    "update_hash": "sha256:3cd9ce547e5a364801a56410fdf12ac530153882f8ce67aed600a7b1558e119d7"
                 }
             ]
         }
