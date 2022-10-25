@@ -13,6 +13,8 @@ function getOtherMessages(project) {
     const validCategories = categories.map(cat => cat.category);
     const projectMessages = messages[project];
 
+    if (!projectMessages) return [];
+
     return Object.values(projectMessages).filter(
         ({ category }) => !category || !validCategories.includes(category)
     ).sort(
@@ -29,6 +31,8 @@ function getOtherMessages(project) {
  */
 function getMessagesForCategory(category, project) {
     const projectMessages = messages[project];
+
+    if (!projectMessages) return [];
 
     return Object.values(projectMessages).filter(
         message => message.category && message.category === category
