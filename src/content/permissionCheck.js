@@ -5,21 +5,21 @@ const permissionCheckError = 'An error occurred while trying to validate Mojira 
  * @param {string} response The API response, hopefully in JSON format
  * 
  * @returns {boolean} whether the user is in at least one non-`users` group
- * @throws {string} if there's no valid JSON or the JSON does not follow the API scheme.
+ * @throws {Error} if there's no valid JSON or the JSON does not follow the API scheme.
  */
 function parsePermissionResponse(response) {
     try {
         const json = JSON.parse(response);
 
         const groups = json.groups?.items;
-        if (!groups) throw 'The API response is malformed and does not include groups.';
+        if (!groups) throw new Error('The API response is malformed and does not include groups.');
 
         return groups.filter(group => group.name !== 'users').length > 0;
     } catch (error) {
         if (error instanceof SyntaxError) {
-            throw `${permissionCheckError}The server returned invalid JSON: ${error.message}`;
+            throw new Error(`${permissionCheckError}The server returned invalid JSON: ${error.message}`);
         } else {
-            throw `${permissionCheckError}${error}`;
+            throw new Error(`${permissionCheckError}${error}`);
         }
     }
 }
@@ -28,7 +28,7 @@ function parsePermissionResponse(response) {
  * Checks if the currently logged in user is a volunteer user (moderator / helper).
  *
  * @returns {Promise<boolean>} true is the logged in user is a helper+, false otherwise.
- * @throws {string} if an error occurs
+ * @throws {Error} if an error occurs
  */
 function queryPermissions() {
     return new Promise(async (resolve, reject) => {
@@ -42,9 +42,12 @@ function queryPermissions() {
                     } catch (error) {
                         reject(error);
                     }
+                } else if (httpRequest.status === 401) {
+                    // User is not logged in
+                    resolve(false);
                 }
                 reject(
-                    `${permissionCheckError}The server returned status code ${httpRequest.status} ${httpRequest.statusText}.`
+                    new Error(`${permissionCheckError}The server returned status code ${httpRequest.status} ${httpRequest.statusText}.`)
                 );
             }
         }
@@ -63,7 +66,7 @@ function queryPermissions() {
  * Uses the value from the cache unless the user name has changed.
  * 
  * @returns {Promise<boolean>} true if the logged in user is a helper+, false otherwise.
- * @throws {string} if an error occurr.
+ * @throws {Error} if an error occurr.
  */
 async function validatePermissions() {
     const userName = document.querySelector('meta[name=ajs-remote-user]')?.attributes?.getNamedItem('content')?.value;

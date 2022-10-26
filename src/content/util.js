@@ -5,7 +5,8 @@
 async function sendErrorMessage(error) {
     console.error(error);
     try {
-        let errorMessage = `*${error.message}*`;
+        let errorMessage = (typeof error === 'string') ? error : `*${error.message}*`;
+
         if (error.stack) {
             errorMessage += '\n```\n' + error.stack + '\n```';
         }
