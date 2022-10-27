@@ -126,6 +126,8 @@ function makeCustomSortButton(rootElement, sortButton) {
  * @param {Element} element The activity module to be modified
  */
 function modifyActivityModule(element) {
+    element.classList.add('mojira-activitymodule-initialized');
+
     const sortButton = element.querySelector('#sort-button');
     const customSortButton = document.querySelector('#custom-sort-button');
 

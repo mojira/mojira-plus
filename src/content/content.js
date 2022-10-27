@@ -3,22 +3,35 @@ The main content script modifying the JIRA page.
 Relies on all the other files in `src/content`.
 */
 
-function init() {
-    var editorCount = 0;
-    setInterval(() => {
-        document.querySelectorAll('.jira-wikifield:not(.mojira-helper-messages-field)').forEach(async element => {
-            try {
-                modifyWikifield(
-                    element,
-                    element.getAttribute('issue-key').split('-')[0].toLowerCase(),
-                    editorCount++
-                );
-            } catch (error) {
-                await sendErrorMessage(error);
-            }
-        });
+let editorCount = 0;
 
-        document.querySelectorAll('#activitymodule .mod-content').forEach(async element => {
+/**
+ * Initializes the textfield modifications
+ */
+function initWikifields() {
+    const wikifields = document.querySelectorAll('.jira-wikifield:not(.mojira-helper-messages-field)');
+
+    wikifields.forEach(async element => {
+        try {
+            modifyWikifield(
+                element,
+                element.getAttribute('issue-key').split('-')[0].toLowerCase(),
+                editorCount++
+            );
+        } catch (error) {
+            await sendErrorMessage(error);
+        }
+    });
+}
+
+/**
+ * Initializes the activity module modifications
+ */
+function initActivityModules() {
+    const activityModules = document.querySelectorAll('#activitymodule .mod-content:not(.mojira-activitymodule-initialized)');
+
+    activityModules.forEach(element => {
+        const observer = new window.MutationObserver(async () => {
             try {
                 modifyActivityModule(element);
             } catch (error) {
@@ -26,12 +39,35 @@ function init() {
             }
         });
 
+        observer.observe(element, { childList: true })
+
+        modifyActivityModule(element);
+    });
+}
+
+function init() {
+    initWikifields();
+    initActivityModules();
+
+    setInterval(() => {
+        initWikifields();
+        initActivityModules();
+
         try {
             handlePostponeButton();
         } catch (error) {
             sendErrorMessage(error);
         }
     }, 1000);
+
+    // Re-initialize activity module in search view when switching to another ticket
+    document.querySelectorAll('.issue-container').forEach(element => {
+        const observer = new window.MutationObserver(async () => {
+            initActivityModules();
+        });
+
+        observer.observe(element, { attributes: true });
+    });
 
     document.addEventListener('keyup', async event => {
         var element = event.target;
