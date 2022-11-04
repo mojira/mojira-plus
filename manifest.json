@@ -1,9 +1,9 @@
 {
     "manifest_version": 2,
     "name": "Mojira Plus",
-    "version": "0.5",
+    "version": "0.6",
     
-    "description": "Enables various additional features on Mojang's bug tracker Mojira for helpers, moderators, and other Mojira power users. Please note that the helper messages included in this extension may only be used by Mojira helpers, moderators, and Mojang staff.",
+    "description": "Enables various additional features on Mojang's bug tracker Mojira for helpers, moderators, and other Mojira power users.",
     
     "browser_specific_settings": {
         "gecko": {
