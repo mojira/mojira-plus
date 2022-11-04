@@ -103,32 +103,31 @@ async function getExpandedMessage(shortcut, project) {
  * @param {string} project The project the current ticket is in
  */
 async function replaceText(textArea, project) {
-    var cursorPos = textArea.selectionStart;
-    var replacementStart = cursorPos;
+    let cursorPos = textArea.selectionStart;
 
-    var text = textArea.value;
-    var textChanged = false;
+    let text = textArea.value;
+    let textChanged = false;
 
-    var replacement;
+    let replacementStart;
+    let replacement;
 
     for (var shortcut in messages[project]) {
-        var toReplace = `${prefix}${shortcut}`;
-        var pos = text.indexOf(toReplace);
+        const toReplace = `${prefix}${shortcut}`;
+        const replacePos = text.indexOf(toReplace);
 
-        if (pos >= 0) {
+        if (replacePos >= 0) {
+            replacementStart = replacePos;
             replacement = await getExpandedMessage(shortcut, project);
 
             if (replacement === undefined)
                 return;
 
-            replacementStart = cursorPos - toReplace.length;
-
-            var insertedText = replacement.insertedText;
+            const insertedText = replacement.insertedText;
 
             textChanged = true;
 
-            if (cursorPos > pos) {
-                cursorPos += (insertedText.length - toReplace.length);
+            if (cursorPos >= replacementStart) {
+                cursorPos = replacementStart + insertedText.length;
             }
 
             text = text.replace(toReplace, insertedText);
