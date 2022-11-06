@@ -21,11 +21,6 @@
                     "version": "0.4",
                     "update_link": "https://github.com/mojira/mojira-plus/releases/download/v0.4/mojira-message-extension-0.4.xpi",
                     "update_hash": "sha256:363561ade64467dee395641f64471e982a5b4649c7db96f2f98a9d14539e890c"
-                },
-                {
-                    "version": "0.5",
-                    "update_link": "https://github.com/mojira/mojira-plus/releases/download/v0.5/mojira-plus-0.5.xpi",
-                    "update_hash": "sha256:cd9ce547e5a364801a56410fdf12ac530153882f8ce67aed600a7b1558e119d7"
                 }
             ]
         },
@@ -35,6 +30,11 @@
                     "version": "0.5",
                     "update_link": "https://github.com/mojira/mojira-plus/releases/download/v0.5/mojira-plus-0.5.xpi",
                     "update_hash": "sha256:3cd9ce547e5a364801a56410fdf12ac530153882f8ce67aed600a7b1558e119d7"
+                },
+                {
+                    "version": "0.6",
+                    "update_link": "https://github.com/mojira/mojira-plus/releases/download/v0.6/mojira-plus-0.6.xpi",
+                    "update_hash": "sha256:a1c446b6b2eaaf9dde31bebe285290069a416422ab8862ab6264398360faad9a"
                 }
             ]
         }
