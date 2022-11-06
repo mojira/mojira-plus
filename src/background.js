@@ -1,8 +1,10 @@
-import { initAutoupdate } from '../util/autoupdate.js';
-import { showErrorBadge } from '../util/badge.js';
-import { reportError } from '../util/errorReporting.js';
-import { getMessages, triggerMessageUpdate } from '../util/messages.js';
-import { getCustomSortIndex, getPostponeAction, getPrefix, setCustomSortIndex, setPopupMessage } from '../util/storage.js';
+import '../lib/browser-polyfill.js';
+
+import { initAutoupdate } from './util/autoupdate.js';
+import { showErrorBadge } from './util/badge.js';
+import { reportError } from './util/errorReporting.js';
+import { getMessages, triggerMessageUpdate } from './util/messages.js';
+import { getCustomSortIndex, getPostponeAction, getPrefix, setCustomSortIndex, setPopupMessage } from './util/storage.js';
 
 /**
  * @type {{
@@ -18,7 +20,7 @@ let permissionCache = {
 (async () => {
     await setPopupMessage(undefined);
 
-    browser.browserAction.onClicked.addListener(() => {
+    browser.action.onClicked.addListener(() => {
         browser.runtime.openOptionsPage();
     });
 

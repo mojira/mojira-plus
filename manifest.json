@@ -1,14 +1,14 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
     "name": "Mojira Plus",
-    "version": "0.6",
+    "version": "0.7",
     
     "description": "Enables various additional features on Mojang's bug tracker Mojira for helpers, moderators, and other Mojira power users.",
     
     "browser_specific_settings": {
         "gecko": {
             "id": "mojira-plus@mojira.github.io",
-            "strict_min_version": "68.0"
+            "strict_min_version": "101.0"
         }
     },      
 
@@ -18,7 +18,8 @@
     },
 
     "background": {
-        "page": "src/background/background.html"
+        "service_worker": "src/background.js",
+        "type": "module"
     },
 
     "options_ui": {
@@ -26,7 +27,7 @@
         "browser_style": true
     },
 
-    "browser_action": {
+    "action": {
         "default_icon": "icons/mojira-logo-32.png",
         "default_title": "Mojira Plus",
         "browser_style": true
