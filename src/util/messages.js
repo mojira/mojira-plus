@@ -51,34 +51,26 @@ async function processMessageUpdate(response) {
  * Check for updated messages
  * @param {boolean} silent Whether the update should be executed silently (without a badge)
  */
-function checkForMessageUpdates(silent = false) {
-    return new Promise(async resolve => {
-        await setLastUpdateCheck();
+async function checkForMessageUpdates(silent = false) {
+    await setLastUpdateCheck();
 
-        if (!silent) await showLoadingBadge();
+    if (!silent) await showLoadingBadge();
 
-        const httpRequest = new XMLHttpRequest();
-        httpRequest.onreadystatechange = async () => {
-            if (httpRequest.readyState === XMLHttpRequest.DONE) {
-                if (httpRequest.status === 200) {
-                    if (httpRequest.responseText !== await getLastCachedMessages()) {
-                        await processMessageUpdate(httpRequest.responseText);
-                    } else {
-                        await hideBadge(!silent);
-                    }
-                } else {
-                    await showErrorBadge(
-                        'An error occurred while trying to check whether the helper messages were updated.\n'
-                        + `The server returned status code ${httpRequest.status} ${httpRequest.statusText}.`
-                    );
-                }
-                resolve();
-            }
-        };
-
-        httpRequest.open('GET', await getUrl());
-        httpRequest.send();
-    });
+    const response = await fetch(await getUrl());
+    const text = await response.text();
+    
+    if (response.ok) {
+        if (text !== await getLastCachedMessages()) {
+            await processMessageUpdate(text);
+        } else {
+            await hideBadge(!silent);
+        }
+    } else {
+        await showErrorBadge(
+            'An error occurred while trying to check whether the helper messages were updated.\n'
+            + `The server returned status code ${response.status} ${text}.`
+        );
+    }
 }
 
 /**

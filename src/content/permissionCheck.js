@@ -32,29 +32,24 @@ function parsePermissionResponse(response) {
  */
 function queryPermissions() {
     return new Promise(async (resolve, reject) => {
-        const httpRequest = new XMLHttpRequest();
-        httpRequest.onreadystatechange = async () => {
-            if (httpRequest.readyState === XMLHttpRequest.DONE) {
-                if (httpRequest.status === 200) {
-                    try {
-                        const perm = parsePermissionResponse(httpRequest.responseText);
-                        resolve(perm);
-                    } catch (error) {
-                        reject(error);
-                    }
-                } else if (httpRequest.status === 401) {
-                    // User is not logged in
-                    resolve(false);
+        try {
+            const response = await fetch('https://bugs.mojang.com/rest/api/2/myself?expand=groups');
+            const text = await response.text();
+
+            if (response.ok) {
+                try {
+                    const perm = parsePermissionResponse(text);
+                    resolve(perm);
+                } catch (error) {
+                    reject(error);
                 }
+            } else if (response.status === 401) {
+                resolve(false);
+            } else {
                 reject(
-                    new Error(`${permissionCheckError}The server returned status code ${httpRequest.status} ${httpRequest.statusText}.`)
+                    new Error(`${permissionCheckError}The server returned status code ${response.status} ${text}.`)
                 );
             }
-        }
-
-        try {
-            httpRequest.open('GET', 'https://bugs.mojang.com/rest/api/2/myself?expand=groups');
-            httpRequest.send();
         } catch (error) {
             reject(`${permissionCheckError}${error}`);
         }

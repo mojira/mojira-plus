@@ -37,29 +37,19 @@ async function updateLastCommits(response, lastKnownSha) {
 /**
  * Updates the commits since the last update
  */
-export function updateChangelog() {
-    return new Promise(async resolve => {
-        const lastKnownSha = await getLastCommit();
+export async function updateChangelog() {
+    const lastKnownSha = await getLastCommit();
 
-        if (!(await getCommitUpdatesEnabled())) {
-            await setLastCommit('none');
-            return;
-        }
+    if (!(await getCommitUpdatesEnabled())) {
+        await setLastCommit('none');
+        return;
+    }
 
-        const httpRequest = new XMLHttpRequest();
-        httpRequest.onreadystatechange = async () => {
-            if (httpRequest.readyState === XMLHttpRequest.DONE) {
-                if (httpRequest.status === 200) {
-                    await updateLastCommits(httpRequest.responseText, lastKnownSha);
-                } else {
-                    console.error(httpRequest);
-                }
+    const response = await fetch(await getCommitUrl());
 
-                resolve();
-            }
-        };
-
-        httpRequest.open('GET', await getCommitUrl());
-        httpRequest.send();
-    });
+    if (response.ok) {
+        await updateLastCommits(await response.text(), lastKnownSha);
+    } else {
+        console.error(response);
+    }
 }

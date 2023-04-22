@@ -18,7 +18,7 @@ let permissionCache = {
 (async () => {
     await setPopupMessage(undefined);
 
-    browser.browserAction.onClicked.addListener(() => {
+    browser.action.onClicked.addListener(() => {
         browser.runtime.openOptionsPage();
     });
 
