@@ -26,14 +26,17 @@ This extension adds two additional sort modes to the activity section on bug rep
 The postpone button is only seldomly used, and instead usually is clicked by mistake. This extension provides an option to either hide it completely or show a warning before the issue is actually postponed.
 
 ## Installation
-### Firefox
+### Extension store (recommended)
+Download and install the extension on the [Mozilla add-on page](https://addons.mozilla.org/de/firefox/addon/mojira-plus/) or the [Chrome web store](https://chrome.google.com/webstore/detail/mojira-plus/fpdecaofpefndhlhhmjkinbopaamiolf).
+
+### Firefox (manual)
 1. Select the latest version of the extension on the [releases](https://github.com/mojira/mojira-plus/releases) page.
 2. Click on the `.xpi` file
 3. Follow the instructions on the popups that show up in order to install the extension
 
 You now have installed the extension successfully. If this is enabled in the browser settings, it will be automatically updated whenever there's a new version of it available.
 
-### Google Chrome and other Chromium-based browsers
+### Google Chrome and other Chromium-based browsers (manual)
 1. Select the latest version of the extension on the [releases](https://github.com/mojira/mojira-plus/releases) page.
 2. Download the `.zip` file
 3. Extract the `.zip` file into a folder and place it somewhere on your system
